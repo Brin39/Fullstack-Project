@@ -1,0 +1,80 @@
+.layout {
+     min-height: 100vh;
+     display: flex;
+     flex-direction: column;
+}
+
+.main {
+     flex: 1;
+     padding: 2rem;
+}
+
+.container {
+     max-width: 1200px;
+     margin: 0 auto;
+     padding: 0 1rem;
+}
+
+.title {
+     font-size: 2rem;
+     font-weight: 600;
+     color: #1F2937;
+     margin-bottom: 2rem;
+}
+
+.loading {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     min-height: 200px;
+     font-size: 1.2rem;
+     color: #6B7280;
+}
+
+.error {
+     color: #EF4444;
+     text-align: center;
+     padding: 1rem;
+     background-color: #FEE2E2;
+     border-radius: 0.5rem;
+     margin: 1rem 0;
+}
+
+/* Адаптивная вёрстка для планшетов */
+@media (max-width: 1024px) {
+     .main {
+          padding: 1.5rem;
+     }
+
+     .title {
+          font-size: 1.75rem;
+     }
+}
+
+/* Адаптивная вёрстка для мобильных устройств */
+@media (max-width: 768px) {
+     .main {
+          padding: 1rem;
+     }
+
+     .container {
+          padding: 0 0.5rem;
+     }
+
+     .title {
+          font-size: 1.5rem;
+          margin-bottom: 1.5rem;
+     }
+}
+
+/* Адаптивная вёрстка для очень маленьких экранов */
+@media (max-width: 480px) {
+     .main {
+          padding: 0.75rem;
+     }
+
+     .title {
+          font-size: 1.25rem;
+          margin-bottom: 1rem;
+     }
+}

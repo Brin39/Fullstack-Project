@@ -1,0 +1,76 @@
+.modalOverlay {
+     position: fixed;
+     top: 0;
+     left: 0;
+     right: 0;
+     bottom: 0;
+     background-color: rgba(0, 0, 0, 0.5);
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     z-index: 1000;
+}
+
+.modal {
+     background: white;
+     border-radius: 8px;
+     padding: 24px;
+     max-height: 90vh;
+     overflow-y: auto;
+     position: relative;
+     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.modal.small {
+     width: 90%;
+     max-width: 400px;
+}
+
+.modal.medium {
+     width: 90%;
+     max-width: 600px;
+}
+
+.modal.large {
+     width: 90%;
+     max-width: 900px;
+}
+
+.modalHeader {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     margin-bottom: 20px;
+}
+
+.modalHeader h2 {
+     margin: 0;
+     font-size: 1.5rem;
+     color: #333;
+}
+
+.closeButton {
+     background: none;
+     border: none;
+     font-size: 1.5rem;
+     cursor: pointer;
+     color: #666;
+     padding: 0;
+     line-height: 1;
+     width: 30px;
+     height: 30px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     border-radius: 4px;
+     transition: all 0.2s;
+}
+
+.closeButton:hover {
+     color: #333;
+     background-color: #f3f4f6;
+}
+
+.modalContent {
+     /* Контент будет стилизоваться в дочерних компонентах */
+}

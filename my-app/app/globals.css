@@ -1,0 +1,29 @@
+@import './styles/variables.css';
+
+:root {
+     --foreground-rgb: 0, 0, 0;
+     --background-start-rgb: 255, 255, 255;
+     --background-end-rgb: 255, 255, 255;
+}
+
+body {
+     color: rgb(var(--foreground-rgb));
+     background: rgb(var(--background-start-rgb));
+}
+
+@media (max-width: 768px) {
+     * {
+          box-sizing: border-box;
+     }
+     
+     .container {
+          width: 100%;
+          max-width: 100%;
+     }
+}
+
+@media (max-width: 480px) {
+     body {
+          font-size: 14px;
+     }
+}

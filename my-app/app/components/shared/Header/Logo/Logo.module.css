@@ -1,0 +1,25 @@
+.logo {
+     display: flex;
+     align-items: center;
+}
+
+.logoLink {
+     display: flex;
+     align-items: center;
+     gap: 0.5rem;
+     text-decoration: none;
+}
+
+.logoSvg {
+     transition: transform var(--transition-normal);
+}
+
+.logoLink:hover .logoSvg {
+     transform: scale(1.05);
+}
+
+.logoText {
+     font-size: 1.5rem;
+     font-weight: bold;
+     color: var(--primary-color);
+}

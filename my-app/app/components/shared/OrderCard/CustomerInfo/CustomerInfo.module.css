@@ -1,0 +1,29 @@
+.customer {
+     margin-bottom: var(--spacing-md);
+     padding: var(--spacing-sm);
+     background-color: var(--bg-secondary);
+     border-radius: var(--radius-sm);
+}
+
+.email {
+     color: var(--text-muted);
+     font-size: 0.875rem;
+}
+
+
+@media (max-width: 768px) {
+     .customer {
+          margin-bottom: var(--spacing-sm);
+          padding: var(--spacing-xs);
+     }
+}
+
+@media (max-width: 480px) {
+     .customer {
+          font-size: 0.85rem;
+     }
+
+     .email {
+          font-size: 0.8rem;
+     }
+}

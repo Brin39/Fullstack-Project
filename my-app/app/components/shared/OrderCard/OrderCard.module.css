@@ -1,0 +1,66 @@
+.orderCard {
+     background: var(--bg-primary);
+     border-radius: var(--radius-lg);
+     padding: var(--spacing-lg);
+     box-shadow: var(--shadow-sm);
+     margin-bottom: var(--spacing-md);
+     width: 100%;
+}
+
+.orderContent {
+     display: flex;
+     flex-wrap: wrap;
+     justify-content: space-between;
+     gap: var(--spacing-lg);
+     color: var(--text-secondary);
+     font-size: 0.9rem;
+     width: 100%;
+}
+
+.orderActions {
+     display: flex;
+     flex-wrap: wrap;
+     gap: var(--spacing-sm);
+     align-items: center;
+     margin-top: var(--spacing-md);
+     width: 100%;
+}
+
+@media (max-width: 768px) {
+     .orderCard {
+          padding: var(--spacing-md);
+     }
+
+     .orderContent {
+          flex-direction: column;
+          justify-content: flex-start;
+          gap: var(--spacing-md);
+     }
+
+     .orderActions {
+          margin-top: var(--spacing-sm);
+          justify-content: stretch;
+     }
+
+     .orderActions>div {
+          width: 100%;
+     }
+}
+
+@media (max-width: 480px) {
+     .orderCard {
+          padding: var(--spacing-sm);
+          margin-bottom: var(--spacing-sm);
+     }
+
+     .orderContent {
+          gap: var(--spacing-sm);
+          font-size: 0.85rem;
+     }
+
+     .orderActions {
+          flex-direction: column;
+          align-items: stretch;
+          gap: var(--spacing-xs);
+     }
+}

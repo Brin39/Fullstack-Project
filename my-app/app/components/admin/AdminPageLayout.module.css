@@ -1,0 +1,117 @@
+.layout {
+     display: flex;
+     min-height: calc(100vh - 64px);
+}
+
+.content {
+     flex: 1;
+     padding: var(--spacing-lg);
+     background: var(--bg-secondary);
+}
+
+.header {
+     margin-bottom: var(--spacing-lg);
+}
+
+.header h1 {
+     font-size: clamp(1.5rem, 4vw, 1.8rem);
+     color: var(--text-primary);
+     margin-bottom: var(--spacing-md);
+}
+
+.actions {
+     display: flex;
+     flex-wrap: wrap;
+     justify-content: space-between;
+     align-items: center;
+     gap: var(--spacing-md);
+}
+
+.count {
+     display: flex;
+     align-items: center;
+     padding: 0.75rem 1rem;
+     background: var(--bg-tertiary);
+     border-radius: var(--radius-md);
+     color: var(--text-secondary);
+     font-weight: 500;
+     font-size: 0.95rem;
+     border: 1px solid var(--border-light);
+     white-space: nowrap;
+}
+
+.addButton {
+     background: var(--primary-color);
+     color: white;
+     border: none;
+     padding: 0.75rem 1.5rem;
+     border-radius: var(--radius-md);
+     font-weight: 500;
+     cursor: pointer;
+     transition: var(--transition-normal);
+     white-space: nowrap;
+}
+
+.addButton:hover {
+     background: var(--primary-hover);
+     transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+     .layout {
+          flex-direction: column;
+          width: 100%;
+     }
+
+     .content {
+          padding: var(--spacing-md);
+          order: 2;
+          width: 100%;
+     }
+
+     .actions {
+          flex-direction: column;
+          align-items: stretch;
+          gap: var(--spacing-sm);
+          width: 100%;
+     }
+
+     .count {
+          text-align: center;
+          justify-content: center;
+          width: 100%;
+     }
+
+     .addButton {
+          width: 100%;
+          text-align: center;
+     }
+}
+
+@media (max-width: 480px) {
+     .header h1 {
+          font-size: 1.5rem;
+     }
+
+     .content {
+          padding: 0.75rem;
+          width: 100%;
+     }
+
+     .actions {
+          gap: 0.5rem;
+          width: 100%;
+     }
+
+     .count {
+          padding: 0.5rem 0.75rem;
+          font-size: 0.875rem;
+          width: 100%;
+     }
+
+     .addButton {
+          padding: 0.625rem 1.25rem;
+          font-size: 0.875rem;
+          width: 100%;
+     }
+}

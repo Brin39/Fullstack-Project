@@ -1,0 +1,85 @@
+.header {
+     display: flex;
+     flex-wrap: wrap;
+     justify-content: space-between;
+     align-items: center;
+     padding: var(--spacing-md);
+     background-color: var(--bg-primary);
+     box-shadow: var(--shadow-sm);
+     gap: var(--spacing-md);
+}
+
+.logo {
+     display: flex;
+     align-items: center;
+}
+
+.logoContainer {
+     display: flex;
+     align-items: center;
+     gap: 0.5rem;
+}
+
+.logoSvg {
+     transition: transform 0.2s;
+}
+
+.logoText {
+     font-size: 1.5rem;
+     font-weight: bold;
+     color: var(--primary-color);
+}
+
+.adminInfo {
+     display: flex;
+     align-items: center;
+     gap: 2rem;
+}
+
+.adminName {
+     font-size: 1.1rem;
+     color: var(--text-primary);
+     font-weight: 500;
+}
+
+.logoutButton {
+     padding: 0.5rem 1rem;
+     background-color: var(--primary-color);
+     color: var(--bg-primary);
+     border: none;
+     border-radius: var(--radius-sm);
+     cursor: pointer;
+     transition: background-color var(--transition-normal);
+     font-weight: 500;
+}
+
+.logoutButton:hover {
+     background-color: var(--primary-hover);
+}
+
+@media (max-width: 768px) {
+     .header {
+          padding: 0.75rem;
+     }
+
+     .logoText {
+          font-size: 1.25rem;
+     }
+
+     .adminInfo {
+          order: 3;
+          width: 100%;
+          justify-content: space-between;
+          padding-top: 0.5rem;
+          border-top: 1px solid var(--border-light);
+     }
+
+     .adminName {
+          font-size: 1rem;
+     }
+
+     .logoutButton {
+          padding: 0.4rem 0.8rem;
+          font-size: 0.9rem;
+     }
+}

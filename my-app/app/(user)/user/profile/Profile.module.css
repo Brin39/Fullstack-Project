@@ -1,0 +1,142 @@
+.container {
+     max-width: 800px;
+     margin: 0 auto;
+     padding: 2rem;
+}
+
+.title {
+     font-size: 2rem;
+     color: #333;
+     margin-bottom: 2rem;
+     text-align: center;
+}
+
+.loading {
+     text-align: center;
+     font-size: 1.2rem;
+     color: #666;
+     margin-top: 2rem;
+}
+
+.error {
+     background-color: #ffebee;
+     color: #c62828;
+     padding: 1rem;
+     border-radius: 4px;
+     margin-bottom: 1rem;
+}
+
+.success {
+     background-color: #e8f5e9;
+     color: #2e7d32;
+     padding: 1rem;
+     border-radius: 4px;
+     margin-bottom: 1rem;
+}
+
+.form {
+     background-color: #fff;
+     padding: 2rem;
+     border-radius: 8px;
+     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.formGroup {
+     margin-bottom: 1.5rem;
+}
+
+.formGroup label {
+     display: block;
+     margin-bottom: 0.5rem;
+     color: #333;
+     font-weight: 500;
+}
+
+.formGroup input {
+     width: 100%;
+     padding: 0.75rem;
+     border: 1px solid #ddd;
+     border-radius: 4px;
+     font-size: 1rem;
+}
+
+.formGroup input:focus {
+     outline: none;
+     border-color: #2196f3;
+     box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
+}
+
+.buttonGroup {
+     display: flex;
+     gap: 1rem;
+     margin-top: 2rem;
+}
+
+.saveButton {
+     background-color: #2196f3;
+     color: white;
+     border: none;
+     padding: 0.75rem 1.5rem;
+     border-radius: 4px;
+     cursor: pointer;
+     font-size: 1rem;
+     transition: background-color 0.2s;
+}
+
+.saveButton:hover {
+     background-color: #1976d2;
+}
+
+.cancelButton {
+     background-color: #f5f5f5;
+     color: #333;
+     border: 1px solid #ddd;
+     padding: 0.75rem 1.5rem;
+     border-radius: 4px;
+     cursor: pointer;
+     font-size: 1rem;
+     transition: background-color 0.2s;
+}
+
+.cancelButton:hover {
+     background-color: #e0e0e0;
+}
+
+.profileInfo {
+     background-color: #fff;
+     padding: 2rem;
+     border-radius: 8px;
+     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.infoGroup {
+     margin-bottom: 1.5rem;
+}
+
+.infoGroup h3 {
+     color: #666;
+     font-size: 0.9rem;
+     margin-bottom: 0.5rem;
+}
+
+.infoGroup p {
+     color: #333;
+     font-size: 1.1rem;
+     margin: 0;
+}
+
+.editButton {
+     background-color: #2196f3;
+     color: white;
+     border: none;
+     padding: 0.75rem 1.5rem;
+     border-radius: 4px;
+     cursor: pointer;
+     font-size: 1rem;
+     transition: background-color 0.2s;
+     margin-top: 1rem;
+}
+
+.editButton:hover {
+     background-color: #1976d2;
+}
