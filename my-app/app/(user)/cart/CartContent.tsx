@@ -2,6 +2,7 @@ import CartItem from './CartItem/CartItem';
 import styles from './page.module.css';
 import { useRouter } from 'next/navigation';
 import { CartProduct } from '@/app/types/cart';
+import { buildApiUrl } from '@/app/utils/apiBase';
 
 interface CartContentProps {
      cartItems: CartProduct[];
@@ -28,7 +29,7 @@ export default function CartContent({
                     return;
                }
 
-               const response = await fetch('http://localhost:5000/api/orders', {
+               const response = await fetch(buildApiUrl('/api/orders'), {
                     method: 'POST',
                     headers: {
                          'Content-Type': 'application/json',

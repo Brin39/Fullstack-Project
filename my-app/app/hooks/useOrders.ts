@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Order } from '@/app/(admin)/admin/orders/types';
 import { OrderStatus } from '@/app/utils/orderUtils';
 import { useAuth } from './useAuth';
+import { buildApiUrl } from '@/app/utils/apiBase';
 
 export function useOrders() {
      const { getAuthHeaders, handleAuthError, checkAuth } = useAuth();
@@ -23,7 +24,7 @@ export function useOrders() {
      const fetchOrders = async () => {
           try {
                const headers = getAuthHeaders();
-               const response = await fetch('http://localhost:5000/api/admin/orders', {
+               const response = await fetch(buildApiUrl('/api/admin/orders'), {
                     headers,
                });
 
@@ -61,7 +62,7 @@ export function useOrders() {
 
           try {
                const headers = getAuthHeaders();
-               const response = await fetch(`http://localhost:5000/api/admin/orders/${orderId}`, {
+               const response = await fetch(buildApiUrl(`/api/admin/orders/${orderId}`), {
                     method: 'PUT',
                     headers,
                     body: JSON.stringify({ status: nextStatus }),
@@ -88,7 +89,7 @@ export function useOrders() {
 
           try {
                const headers = getAuthHeaders();
-               const response = await fetch(`http://localhost:5000/api/admin/orders/${orderId}`, {
+               const response = await fetch(buildApiUrl(`/api/admin/orders/${orderId}`), {
                     method: 'DELETE',
                     headers,
                });

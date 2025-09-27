@@ -7,6 +7,7 @@ import ProductList from './components/shared/ProductList/ProductList';
 import Footer from './components/shared/Footer/Footer';
 import { formatProduct, sortProductsByBestOffer, FormattedProduct } from './utils/productUtils';
 import { useAuthentication } from './hooks/useAuthentication';
+import { buildApiUrl } from './utils/apiBase';
 import styles from './page.module.css';
 
 export default function Home() {
@@ -28,7 +29,7 @@ export default function Home() {
      const fetchProducts = async () => {
           try {
                setLoading(true);
-               const res = await fetch('http://localhost:5000/api/products', {
+               const res = await fetch(buildApiUrl('/api/products'), {
                     cache: 'no-store',
                     headers: {
                          'Content-Type': 'application/json',
@@ -65,7 +66,7 @@ export default function Home() {
                setLoading(true);
                setSearchQuery(query);
 
-               const response = await fetch(`http://localhost:5000/api/products/search?query=${encodeURIComponent(query)}`);
+               const response = await fetch(buildApiUrl(`/api/products/search?query=${encodeURIComponent(query)}`));
 
                if (!response.ok) {
                     throw new Error('Failed to fetch search results');

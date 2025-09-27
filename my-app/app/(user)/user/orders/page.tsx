@@ -6,6 +6,7 @@ import UserHeaderWrapper from '../UserHeaderWrapper/page';
 import OrderCard from '@/app/components/shared/OrderCard/OrderCard';
 import { OrderStatus } from '@/app/utils/orderUtils';
 import styles from './page.module.css';
+import { buildApiUrl } from '@/app/utils/apiBase';
 
 interface Order {
      _id: string;
@@ -38,7 +39,7 @@ export default function OrdersPage() {
                          return;
                     }
 
-                    const response = await fetch('http://localhost:5000/api/orders/my-orders', {
+                    const response = await fetch(buildApiUrl('/api/orders/my-orders'), {
                          headers: {
                               'Authorization': `Bearer ${token}`
                          }

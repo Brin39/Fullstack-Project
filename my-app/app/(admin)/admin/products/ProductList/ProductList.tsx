@@ -1,4 +1,4 @@
-import { Product } from '../types';
+import { Product } from '@/app/types/product';
 import ActionButtons from '@/app/components/shared/ActionButtons/ActionButtons';
 import styles from './ProductList.module.css';
 

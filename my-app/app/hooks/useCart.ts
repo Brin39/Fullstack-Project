@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useCartContext } from '@/app/(user)/cart/CartContext';
 import { useAuth } from './useAuth';
 import { CartProduct } from '@/app/types/cart';
+import { buildApiUrl } from '@/app/utils/apiBase';
 
 export const useCart = () => {
      const { getAuthHeaders, handleAuthError } = useAuth();
@@ -16,7 +17,7 @@ export const useCart = () => {
           try {
                setError(null);
                const headers = getAuthHeaders();
-               const response = await fetch('http://localhost:5000/api/cart', {
+               const response = await fetch(buildApiUrl('/api/cart'), {
                     headers
                });
 
@@ -36,7 +37,7 @@ export const useCart = () => {
 
      const handleQuantityChange = async (productId: string, quantity: number) => {
           try {
-              
+
                setCartItems(prevItems =>
                     prevItems.map(item =>
                          item.product._id === productId
@@ -46,7 +47,7 @@ export const useCart = () => {
                );
 
                const headers = getAuthHeaders();
-               const response = await fetch(`http://localhost:5000/api/cart/update/${productId}`, {
+               const response = await fetch(buildApiUrl(`/api/cart/update/${productId}`), {
                     method: 'PUT',
                     headers: {
                          ...headers,
@@ -57,37 +58,37 @@ export const useCart = () => {
 
                if (handleAuthError(response)) return;
                if (!response.ok) {
-                   
+
                     await fetchCartItems();
                     throw new Error('Failed to update quantity');
                }
           } catch (error) {
                console.error('Failed to update quantity:', error);
-              
+
                await fetchCartItems();
           }
      };
 
      const handleRemoveItem = async (productId: string) => {
           try {
-               
+
                setCartItems(prevItems => prevItems.filter(item => item.product._id !== productId));
 
                const headers = getAuthHeaders();
-               const response = await fetch(`http://localhost:5000/api/cart/${productId}`, {
+               const response = await fetch(buildApiUrl(`/api/cart/${productId}`), {
                     method: 'DELETE',
                     headers
                });
 
                if (handleAuthError(response)) return;
                if (!response.ok) {
-                 
+
                     await fetchCartItems();
                     throw new Error('Failed to remove item');
                }
           } catch (error) {
                console.error('Failed to remove item:', error);
-              
+
                await fetchCartItems();
           }
      };
@@ -95,7 +96,7 @@ export const useCart = () => {
      const handleClearCart = async () => {
           try {
                const headers = getAuthHeaders();
-               const response = await fetch('http://localhost:5000/api/cart/clear', {
+               const response = await fetch(buildApiUrl('/api/cart/clear'), {
                     method: 'DELETE',
                     headers
                });

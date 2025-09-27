@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { buildApiUrl } from '@/app/utils/apiBase';
 
 export interface User {
      _id: string;
@@ -52,7 +53,7 @@ export const useUsers = () => {
                     return;
                }
 
-               const response = await fetch('http://localhost:5000/api/admin/users', {
+               const response = await fetch(buildApiUrl('/api/admin/users'), {
                     headers: {
                          'Authorization': `Bearer ${token}`,
                          'Content-Type': 'application/json',
@@ -83,7 +84,7 @@ export const useUsers = () => {
                     throw new Error('Not authenticated');
                }
 
-               const url = `http://localhost:5000/api/admin/users/${userId}/details`;
+               const url = buildApiUrl(`/api/admin/users/${userId}/details`);
                console.log('Fetching user details from:', url);
 
                const response = await fetch(url, {
@@ -120,7 +121,7 @@ export const useUsers = () => {
                     throw new Error('Not authenticated');
                }
 
-               const response = await fetch(`http://localhost:5000/api/admin/users/${userId}`, {
+               const response = await fetch(buildApiUrl(`/api/admin/users/${userId}`), {
                     method: 'DELETE',
                     headers: {
                          'Authorization': `Bearer ${token}`,

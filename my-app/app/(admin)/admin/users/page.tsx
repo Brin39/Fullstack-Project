@@ -5,6 +5,7 @@ import AdminPageLayout from '@/app/components/admin/AdminPageLayout';
 import UserList from './UserList/UserList';
 import UserModal from './UserModal/UserModal';
 import { useUsers } from '@/app/hooks/useUsers';
+import { buildApiUrl } from '@/app/utils/apiBase';
 
 export default function UsersPage() {
      const {
@@ -24,7 +25,7 @@ export default function UsersPage() {
 
      const testApi = async () => {
           try {
-               const response = await fetch('http://localhost:5000/api/admin/users', {
+               const response = await fetch(buildApiUrl('/api/admin/users'), {
                     headers: {
                          'Authorization': `Bearer ${localStorage.getItem('token')}`,
                          'Content-Type': 'application/json',

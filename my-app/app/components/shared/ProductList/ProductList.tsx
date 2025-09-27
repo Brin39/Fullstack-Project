@@ -7,6 +7,7 @@ import ViewProductModal from '../ViewProductModal/ViewProductModal';
 import AuthModal from '../../auth/AuthModal/AuthModal';
 import { useCartContext } from '@/app/(user)/cart/CartContext';
 import styles from './ProductList.module.css';
+import { buildApiUrl } from '@/app/utils/apiBase';
 
 import { ProductCard as Product } from '@/app/types/product';
 
@@ -48,7 +49,7 @@ export default function ProductList({ initialProducts }: ProductListProps) {
                     return;
                }
 
-               const response = await fetch('http://localhost:5000/api/cart', {
+               const response = await fetch(buildApiUrl('/api/cart'), {
                     method: 'POST',
                     headers: {
                          'Content-Type': 'application/json',

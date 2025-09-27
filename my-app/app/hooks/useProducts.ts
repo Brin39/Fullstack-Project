@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Product } from '@/app/(admin)/admin/products/types';
+import { Product } from '@/app/types/product';
 import { useAuth } from './useAuth';
+import { buildApiUrl } from '@/app/utils/apiBase';
 
 export function useProducts() {
      const { getAuthHeaders, handleAuthError } = useAuth();
@@ -16,7 +17,7 @@ export function useProducts() {
      const fetchProducts = async () => {
           try {
                const headers = getAuthHeaders();
-               const response = await fetch('http://localhost:5000/api/admin/products', {
+               const response = await fetch(buildApiUrl('/api/admin/products'), {
                     headers,
                });
 
@@ -51,7 +52,7 @@ export function useProducts() {
                     return;
                }
 
-               const response = await fetch(`http://localhost:5000/api/products/search?query=${encodeURIComponent(query)}`, {
+               const response = await fetch(buildApiUrl(`/api/products/search?query=${encodeURIComponent(query)}`), {
                     headers,
                });
 
@@ -72,7 +73,7 @@ export function useProducts() {
      const handleSaveProduct = async (updatedProduct: Partial<Product>) => {
           try {
                const headers = getAuthHeaders();
-               const response = await fetch(`http://localhost:5000/api/admin/products/${updatedProduct._id}`, {
+               const response = await fetch(buildApiUrl(`/api/admin/products/${updatedProduct._id}`), {
                     method: 'PUT',
                     headers,
                     body: JSON.stringify(updatedProduct)
@@ -99,7 +100,7 @@ export function useProducts() {
      const handleCreateProduct = async (newProduct: Partial<Product>) => {
           try {
                const headers = getAuthHeaders();
-               const response = await fetch('http://localhost:5000/api/admin/products', {
+               const response = await fetch(buildApiUrl('/api/admin/products'), {
                     method: 'POST',
                     headers,
                     body: JSON.stringify(newProduct),
@@ -123,7 +124,7 @@ export function useProducts() {
      const handleDeleteProduct = async (product: Product) => {
           try {
                const headers = getAuthHeaders();
-               const response = await fetch(`http://localhost:5000/api/admin/products/${product._id}`, {
+               const response = await fetch(buildApiUrl(`/api/admin/products/${product._id}`), {
                     method: 'DELETE',
                     headers,
                });

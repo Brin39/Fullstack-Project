@@ -1,16 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import AuthHeader from '../../components/auth/AuthHeader/AuthHeader';
 import Footer from '../../components/shared/Footer/Footer';
-import RoleSelectModal from '../RoleSelect/page';
 import PasswordField from '../../components/auth/PasswordField/PasswordField';
 import { useAuthentication } from '../../hooks/useAuthentication';
 import styles from './page.module.css';
 import formStyles from '../../components/shared.module.css';
 
-export default function LoginPage() {
+function LoginContent() {
      const router = useRouter();
      const { checkToken, handleLogin } = useAuthentication();
      const [formData, setFormData] = useState({
@@ -18,7 +17,6 @@ export default function LoginPage() {
           password: ''
      });
      const [error, setError] = useState('');
-     const [showRoleModal, setShowRoleModal] = useState(false);
 
      useEffect(() => {
           checkToken();
@@ -31,19 +29,10 @@ export default function LoginPage() {
           const result = await handleLogin(formData);
 
           if (result.success) {
-               if (result.role === 'admin') {
-                    setShowRoleModal(true);
-               } else {
-                    router.push('/user');
-               }
+               router.push(result.role === 'admin' ? '/admin' : '/user');
           } else {
                setError(result.error || 'Login failed');
           }
-     };
-
-     const handleRoleSelect = (role: 'admin' | 'user') => {
-          setShowRoleModal(false);
-          router.push(role === 'admin' ? '/admin' : '/user');
      };
 
      return (
@@ -82,8 +71,14 @@ export default function LoginPage() {
                     </p>
                </div>
                <Footer />
-
-               {showRoleModal && <RoleSelectModal onSelect={handleRoleSelect} />}
           </main>
      );
-} 
+}
+
+export default function LoginPage() {
+     return (
+          <Suspense fallback={<div style={{ padding: 16 }}>Loading...</div>}>
+               <LoginContent />
+          </Suspense>
+     );
+}

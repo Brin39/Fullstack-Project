@@ -7,6 +7,7 @@ import Header from '@/app/components/shared/Header/Header';
 import { useCartContext } from '@/app/(user)/cart/CartContext';
 import { useAuthCheck } from '@/app/hooks/useAuthCheck';
 import { clearAuthData } from '@/app/utils/authUtils';
+import { buildApiUrl } from '@/app/utils/apiBase';
 import styles from './page.module.css';
 
 export default function UserHeaderWrapper() {
@@ -30,7 +31,7 @@ export default function UserHeaderWrapper() {
                     const token = localStorage.getItem('token');
                     if (!token) return;
 
-                    const response = await fetch('http://localhost:5000/api/cart', {
+                    const response = await fetch(buildApiUrl('/api/cart'), {
                          headers: {
                               'Authorization': `Bearer ${token}`
                          }

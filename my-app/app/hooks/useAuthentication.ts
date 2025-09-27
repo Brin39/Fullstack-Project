@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { setAuthToken, clearAuthData } from '@/app/utils/authUtils';
+import { buildApiUrl } from '@/app/utils/apiBase';
+import { invalidateProfileCache } from '@/app/hooks/useProfile';
 
 export function useAuthentication() {
      const router = useRouter();
@@ -9,7 +11,7 @@ export function useAuthentication() {
           const token = localStorage.getItem('token');
           if (token) {
                try {
-                    const response = await fetch('http://localhost:5000/api/users/profile', {
+                    const response = await fetch(buildApiUrl('/api/users/profile'), {
                          headers: {
                               'Authorization': `Bearer ${token}`
                          }
@@ -35,7 +37,7 @@ export function useAuthentication() {
 
      const handleLogin = useCallback(async (credentials: { email: string; password: string }) => {
           try {
-               const response = await fetch('http://localhost:5000/api/users/login', {
+               const response = await fetch(buildApiUrl('/api/users/login'), {
                     method: 'POST',
                     headers: {
                          'Content-Type': 'application/json',
@@ -48,6 +50,7 @@ export function useAuthentication() {
 
                if (response.ok) {
                     setAuthToken(data.token);
+                    invalidateProfileCache();
                     return { success: true, role: data.role };
                } else {
                     return { success: false, error: data.message || 'Login failed' };

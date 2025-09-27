@@ -1,4 +1,5 @@
 import { Product } from '@/app/types/product';
+import { buildApiUrl } from '@/app/utils/apiBase';
 
 export interface FormattedProduct {
      _id: string;
@@ -36,7 +37,7 @@ export const sortProductsByBestOffer = (products: FormattedProduct[]): Formatted
 
 export const fetchAndFormatProducts = async (): Promise<FormattedProduct[]> => {
      try {
-          const res = await fetch('http://localhost:5000/api/products', {
+          const res = await fetch(buildApiUrl('/api/products'), {
                cache: 'no-store',
                headers: {
                     'Content-Type': 'application/json',

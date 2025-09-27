@@ -6,6 +6,7 @@ import UserHeaderWrapper from '@/app/(user)/user/UserHeaderWrapper/page';
 import ProfileForm from '@/app/components/profile/ProfileForm';
 import ProfileInfo from '@/app/components/profile/ProfileInfo';
 import styles from '@/app/components/profile/Profile.module.css';
+import { buildApiUrl } from '@/app/utils/apiBase';
 
 interface UserProfile {
      _id: string;
@@ -34,7 +35,7 @@ export default function ProfilePage() {
                     return;
                }
 
-               const response = await fetch('http://localhost:5000/api/users/profile', {
+               const response = await fetch(buildApiUrl('/api/users/profile'), {
                     headers: {
                          'Authorization': `Bearer ${token}`
                     }
@@ -59,7 +60,7 @@ export default function ProfilePage() {
                     return;
                }
 
-               const response = await fetch('http://localhost:5000/api/users/profile', {
+               const response = await fetch(buildApiUrl('/api/users/profile'), {
                     method: 'PUT',
                     headers: {
                          'Content-Type': 'application/json',

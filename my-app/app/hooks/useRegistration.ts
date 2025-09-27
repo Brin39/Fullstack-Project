@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { buildApiUrl } from '@/app/utils/apiBase';
 
 export function useRegistration() {
      const handleRegistration = useCallback(async (formData: {
@@ -14,7 +15,7 @@ export function useRegistration() {
           }
 
           try {
-               const endpoint = 'http://localhost:5000/api/users/register';
+               const endpoint = buildApiUrl('/api/users/register');
                const response = await fetch(endpoint, {
                     method: 'POST',
                     headers: {

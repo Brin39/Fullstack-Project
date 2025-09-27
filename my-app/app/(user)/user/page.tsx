@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import UserHeaderWrapper from '@/app/(user)/user/UserHeaderWrapper/page';
 import ProductList from '@/app/components/shared/ProductList/ProductList';
 import { fetchAndFormatProducts } from '@/app/utils/productUtils';

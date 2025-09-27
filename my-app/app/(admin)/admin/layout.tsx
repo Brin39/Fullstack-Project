@@ -6,6 +6,7 @@ import AdminHeader from './AdminHeader/AdminHeader';
 import AdminFooter from './AdminFooter/AdminFooter';
 import { useAuthCheck } from '@/app/hooks/useAuthCheck';
 import styles from './layout.module.css';
+import { buildApiUrl } from '@/app/utils/apiBase';
 
 export default function AdminLayout({
      children,
@@ -22,7 +23,7 @@ export default function AdminLayout({
           const checkAuth = async () => {
                try {
                     const headers = getAuthHeaders();
-                    const response = await fetch('http://localhost:5000/api/admin/check-admin', {
+                    const response = await fetch(buildApiUrl('/api/admin/check-admin'), {
                          headers
                     });
 

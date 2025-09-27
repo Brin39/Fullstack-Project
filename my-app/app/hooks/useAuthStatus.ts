@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { clearAuthData } from '@/app/utils/authUtils';
+import { buildApiUrl } from '@/app/utils/apiBase';
+import { getProfile } from '@/app/hooks/useProfile';
 
 export function useAuthStatus() {
      const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -12,14 +14,8 @@ export function useAuthStatus() {
                     return;
                }
 
-               const response = await fetch('http://localhost:5000/api/users/profile', {
-                    headers: {
-                         'Authorization': `Bearer ${token}`
-                    }
-               });
-
-               if (response.ok) {
-                    const data = await response.json();
+               const data = await getProfile();
+               if (data) {
                     setIsAuthenticated(true);
                } else {
                     clearAuthData();
@@ -40,7 +36,7 @@ export function useAuthStatus() {
                     checkAuthStatus();
                }
           };
-          
+
           const handleStorageChangeSameWindow = () => {
                checkAuthStatus();
           };
@@ -50,7 +46,7 @@ export function useAuthStatus() {
           };
 
           const handleVisibilityChange = () => {
-               if (document.visibilityState === 'hidden') { 
+               if (document.visibilityState === 'hidden') {
                }
           };
 

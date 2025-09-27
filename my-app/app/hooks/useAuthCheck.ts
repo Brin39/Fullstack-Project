@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { getAuthHeaders, clearAuthData } from '@/app/utils/authUtils';
+import { buildApiUrl } from '@/app/utils/apiBase';
+import { getProfile } from '@/app/hooks/useProfile';
 
 export function useAuthCheck() {
      const router = useRouter();
@@ -13,19 +15,12 @@ export function useAuthCheck() {
                     return false;
                }
 
-               const response = await fetch('http://localhost:5000/api/users/profile', {
-                    headers: {
-                         'Authorization': `Bearer ${token}`
-                    }
-               });
-
-               if (!response.ok) {
+               const data = await getProfile();
+               if (!data) {
                     clearAuthData();
                     router.replace('/login');
                     return false;
                }
-
-               const data = await response.json();
                return { isAuthenticated: true, user: data };
           } catch (error) {
                console.error('Auth check failed:', error);
