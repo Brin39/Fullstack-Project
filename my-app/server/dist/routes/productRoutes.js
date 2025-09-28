@@ -18,11 +18,12 @@ router.post('/', authMiddleware_1.protect, authMiddleware_1.isAdmin, productAdmi
 router.put('/:id', authMiddleware_1.protect, authMiddleware_1.isAdmin, productAdminController_1.updateProduct);
 router.delete('/:id', authMiddleware_1.protect, authMiddleware_1.isAdmin, productAdminController_1.deleteProduct);
 // מסלול לחיפוש לפי מילות מפתח
-router.get('/search', async (req, res) => {
+const searchHandler = async (req, res) => {
     try {
         const { query } = req.query;
         if (!query) {
-            return res.status(400).json({ message: 'Search query is required' });
+            res.status(400).json({ message: 'Search query is required' });
+            return;
         }
         const products = await Product_1.Product.find({ $text: { $search: query } }, { score: { $meta: "textScore" } })
             .sort({ score: { $meta: "textScore" } })
@@ -35,7 +36,8 @@ router.get('/search', async (req, res) => {
                     { description: { $regex: query, $options: 'i' } }
                 ]
             }).limit(20);
-            return res.json(regexProducts);
+            res.json(regexProducts);
+            return;
         }
         res.json(products);
     }
@@ -43,5 +45,6 @@ router.get('/search', async (req, res) => {
         console.error('Search error:', error);
         res.status(500).json({ message: 'Error searching products' });
     }
-});
+};
+router.get('/search', searchHandler);
 exports.default = router;
