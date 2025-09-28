@@ -17,11 +17,12 @@ router.put('/:id', protect as RequestHandler, isAdmin as RequestHandler, updateP
 router.delete('/:id', protect as RequestHandler, isAdmin as RequestHandler, deleteProduct as RequestHandler);
 
 // מסלול לחיפוש לפי מילות מפתח
-router.get('/search', async (req, res) => {
+const searchHandler: RequestHandler = async (req, res) => {
      try {
           const { query } = req.query;
           if (!query) {
-               return res.status(400).json({ message: 'Search query is required' });
+               res.status(400).json({ message: 'Search query is required' });
+               return;
           }
 
           const products = await Product.find(
@@ -39,7 +40,8 @@ router.get('/search', async (req, res) => {
                          { description: { $regex: query, $options: 'i' } }
                     ]
                }).limit(20);
-               return res.json(regexProducts);
+               res.json(regexProducts);
+               return;
           }
 
           res.json(products);
@@ -47,6 +49,8 @@ router.get('/search', async (req, res) => {
           console.error('Search error:', error);
           res.status(500).json({ message: 'Error searching products' });
      }
-});
+};
+
+router.get('/search', searchHandler as RequestHandler);
 
 export default router; 
