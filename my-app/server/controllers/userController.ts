@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { RequestHandler } from 'express';
 import { User } from '../models/User';
 import jwt from 'jsonwebtoken';
 
@@ -10,7 +10,7 @@ const generateToken = (id: string) => {
 };
 
 // רישום משתמש
-export const registerUser = async (req: Request, res: Response) => {
+export const registerUser: RequestHandler = async (req, res) => {
      try {
           console.log('=== Registration Start ===');
           console.log('1. Raw request body:', req.body);
@@ -20,17 +20,19 @@ export const registerUser = async (req: Request, res: Response) => {
 
           if (!name || !email || !password) {
                console.log('3. Missing required fields');
-               return res.status(400).json({
+               res.status(400).json({
                     message: 'Please provide all required fields',
                     received: { name, email, password: password ? 'provided' : 'missing' }
                });
+               return;
           }
 
           console.log('4. Checking if user exists');
           const userExists = await User.findOne({ email });
           if (userExists) {
                console.log('5. User already exists');
-               return res.status(400).json({ message: 'User already exists' });
+               res.status(400).json({ message: 'User already exists' });
+               return;
           }
 
           console.log('6. Creating user with data:', { name, email, role });
@@ -72,20 +74,22 @@ export const registerUser = async (req: Request, res: Response) => {
 };
 
 // כניסת משתמש
-export const loginUser = async (req: Request, res: Response) => {
+export const loginUser: RequestHandler = async (req, res) => {
      try {
           const { email, password } = req.body;
 
           // מציאת משתמש
           const user = await User.findOne({ email });
           if (!user) {
-               return res.status(401).json({ message: 'Invalid email or password' });
+               res.status(401).json({ message: 'Invalid email or password' });
+               return;
           }
 
           // בדיקת סיסמה
           const isMatch = await user.comparePassword(password);
           if (!isMatch) {
-               return res.status(401).json({ message: 'Invalid email or password' });
+               res.status(401).json({ message: 'Invalid email or password' });
+               return;
           }
 
           // שלח תשובה

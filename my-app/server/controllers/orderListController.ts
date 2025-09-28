@@ -5,7 +5,8 @@ import Order from '../models/Order';
 export const getUserOrders: RequestHandler = async (req, res) => {
      try {
           if (!req.user) {
-               return res.status(401).json({ message: 'User not authenticated' });
+               res.status(401).json({ message: 'User not authenticated' });
+               return;
           }
 
           const page = parseInt(req.query.page as string) || 1;

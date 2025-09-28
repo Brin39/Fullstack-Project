@@ -8,7 +8,8 @@ const Order_1 = __importDefault(require("../models/Order"));
 const getUserOrders = async (req, res) => {
     try {
         if (!req.user) {
-            return res.status(401).json({ message: 'User not authenticated' });
+            res.status(401).json({ message: 'User not authenticated' });
+            return;
         }
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
