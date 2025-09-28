@@ -1,22 +1,25 @@
-import { Request, Response } from 'express';
+import { RequestHandler } from 'express';
 import Cart from '../models/Cart';
 import { Product } from '../models/Product';
 
-export const addToCart = async (req: Request, res: Response) => {
+export const addToCart: RequestHandler = async (req, res) => {
      try {
           if (!req.user) {
-               return res.status(401).json({ message: 'User not authenticated' });
+               res.status(401).json({ message: 'User not authenticated' });
+               return;
           }
           const { productId, quantity } = req.body;
           const userId = req.user._id;
 
           const product = await Product.findById(productId);
           if (!product) {
-               return res.status(404).json({ message: 'Product not found' });
+               res.status(404).json({ message: 'Product not found' });
+               return;
           }
 
           if (product.stock < quantity) {
-               return res.status(400).json({ message: 'Not enough stock available' });
+               res.status(400).json({ message: 'Not enough stock available' });
+               return;
           }
 
           let cart = await Cart.findOne({ user: userId });
@@ -46,17 +49,19 @@ export const addToCart = async (req: Request, res: Response) => {
      }
 };
 
-export const getCart = async (req: Request, res: Response) => {
+export const getCart: RequestHandler = async (req, res) => {
      try {
           if (!req.user) {
-               return res.status(401).json({ message: 'User not authenticated' });
+               res.status(401).json({ message: 'User not authenticated' });
+               return;
           }
           const userId = req.user._id;
           const cart = await Cart.findOne({ user: userId })
                .populate('items.product', 'name price images stock description');
 
           if (!cart) {
-               return res.status(200).json({ items: [] });
+               res.status(200).json({ items: [] });
+               return;
           }
 
           res.status(200).json(cart);
@@ -66,22 +71,25 @@ export const getCart = async (req: Request, res: Response) => {
      }
 };
 
-export const updateCartItem = async (req: Request, res: Response) => {
+export const updateCartItem: RequestHandler = async (req, res) => {
      try {
           if (!req.user) {
-               return res.status(401).json({ message: 'User not authenticated' });
+               res.status(401).json({ message: 'User not authenticated' });
+               return;
           }
           const { productId } = req.params;
           const { quantity } = req.body;
           const userId = req.user._id;
 
           if (quantity < 1) {
-               return res.status(400).json({ message: 'Quantity must be at least 1' });
+               res.status(400).json({ message: 'Quantity must be at least 1' });
+               return;
           }
 
           const cart = await Cart.findOne({ user: userId });
           if (!cart) {
-               return res.status(404).json({ message: 'Cart not found' });
+               res.status(404).json({ message: 'Cart not found' });
+               return;
           }
 
           const itemIndex = cart.items.findIndex(
@@ -89,12 +97,14 @@ export const updateCartItem = async (req: Request, res: Response) => {
           );
 
           if (itemIndex === -1) {
-               return res.status(404).json({ message: 'Item not found in cart' });
+               res.status(404).json({ message: 'Item not found in cart' });
+               return;
           }
 
           const product = await Product.findById(productId);
           if (!product || product.stock < quantity) {
-               return res.status(400).json({ message: 'Not enough stock available' });
+               res.status(400).json({ message: 'Not enough stock available' });
+               return;
           }
 
           cart.items[itemIndex].quantity = quantity;
@@ -110,17 +120,19 @@ export const updateCartItem = async (req: Request, res: Response) => {
      }
 };
 
-export const removeFromCart = async (req: Request, res: Response) => {
+export const removeFromCart: RequestHandler = async (req, res) => {
      try {
           if (!req.user) {
-               return res.status(401).json({ message: 'User not authenticated' });
+               res.status(401).json({ message: 'User not authenticated' });
+               return;
           }
           const { productId } = req.params;
           const userId = req.user._id;
 
           const cart = await Cart.findOne({ user: userId });
           if (!cart) {
-               return res.status(404).json({ message: 'Cart not found' });
+               res.status(404).json({ message: 'Cart not found' });
+               return;
           }
 
           cart.items = cart.items.filter(
@@ -139,16 +151,18 @@ export const removeFromCart = async (req: Request, res: Response) => {
      }
 };
 
-export const clearCart = async (req: Request, res: Response) => {
+export const clearCart: RequestHandler = async (req, res) => {
      try {
           if (!req.user) {
-               return res.status(401).json({ message: 'User not authenticated' });
+               res.status(401).json({ message: 'User not authenticated' });
+               return;
           }
           const userId = req.user._id;
 
           const cart = await Cart.findOne({ user: userId });
           if (!cart) {
-               return res.status(404).json({ message: 'Cart not found' });
+               res.status(404).json({ message: 'Cart not found' });
+               return;
           }
 
           cart.items = [];

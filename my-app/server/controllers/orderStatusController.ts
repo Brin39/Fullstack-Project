@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import Order from '../models/Order';
 
-// Обновление статуса заказа
+
 export const updateOrderStatus: RequestHandler = async (req, res) => {
      try {
           const order = await Order.findByIdAndUpdate(
@@ -12,7 +12,8 @@ export const updateOrderStatus: RequestHandler = async (req, res) => {
                .populate('items.product', 'name price');
 
           if (!order) {
-               return res.status(404).json({ message: 'Order not found' });
+               res.status(404).json({ message: 'Order not found' });
+               return;
           }
 
           res.json(order);

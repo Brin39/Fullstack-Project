@@ -10,13 +10,15 @@ interface AuthRequest extends Request {
 export const createOrder: RequestHandler = async (req, res) => {
      try {
           if (!req.user) {
-               return res.status(401).json({ message: 'User not authenticated' });
+               res.status(401).json({ message: 'User not authenticated' });
+               return;
           }
 
           const { items } = req.body;
 
           if (!items || items.length === 0) {
-               return res.status(400).json({ message: 'No products in order' });
+               res.status(400).json({ message: 'No products in order' });
+               return;
           }
 
           // חישוב סכום הזמנה
@@ -24,7 +26,8 @@ export const createOrder: RequestHandler = async (req, res) => {
           for (const item of items) {
                const product = await Product.findById(item.product);
                if (!product) {
-                    return res.status(404).json({ message: `Product not found: ${item.product}` });
+                    res.status(404).json({ message: `Product not found: ${item.product}` });
+                    return;
                }
                totalAmount += product.price * item.quantity;
           }
@@ -49,7 +52,8 @@ export const createOrder: RequestHandler = async (req, res) => {
 export const getOrderById: RequestHandler = async (req, res) => {
      try {
           if (!req.user) {
-               return res.status(401).json({ message: 'User not authenticated' });
+               res.status(401).json({ message: 'User not authenticated' });
+               return;
           }
 
           const order = await Order.findById(req.params.id)
@@ -57,12 +61,14 @@ export const getOrderById: RequestHandler = async (req, res) => {
                .populate('items.product', 'name price');
 
           if (!order) {
-               return res.status(404).json({ message: 'Order not found' });
+               res.status(404).json({ message: 'Order not found' });
+               return;
           }
 
           // בדיקת הרשאות גישה
           if (order.user._id.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
-               return res.status(403).json({ message: 'Access denied' });
+               res.status(403).json({ message: 'Access denied' });
+               return;
           }
 
           res.json(order);
@@ -72,10 +78,11 @@ export const getOrderById: RequestHandler = async (req, res) => {
      }
 };
 
-export const getUserOrders = async (req: Request, res: Response) => {
+export const getUserOrders: RequestHandler = async (req, res) => {
      try {
           if (!req.user) {
-               return res.status(401).json({ message: 'User not authenticated' });
+               res.status(401).json({ message: 'User not authenticated' });
+               return;
           }
 
           const orders = await Order.find({ user: req.user._id })

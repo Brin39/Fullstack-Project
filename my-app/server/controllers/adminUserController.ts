@@ -41,11 +41,12 @@ export const getUserDetails: RequestHandler = async (req, res) => {
           const userId = req.params.id;
           console.log('Getting user details for ID:', userId);
 
-          // Получаем информацию о пользователе
+          
           const user = await User.findById(userId).select('-password');
           if (!user) {
                console.log('User not found');
-               return res.status(404).json({ message: 'User not found' });
+               res.status(404).json({ message: 'User not found' });
+               return;
           }
           console.log('User found:', user.name);
 
@@ -55,10 +56,10 @@ export const getUserDetails: RequestHandler = async (req, res) => {
           })
                .populate('items.product', 'name price')
                .sort({ createdAt: -1 })
-               .limit(10); 
+               .limit(10);
           console.log('Orders found:', orders.length);
 
-         
+
           const totalOrders = await Order.countDocuments({
                user: new mongoose.Types.ObjectId(userId)
           });
@@ -66,7 +67,7 @@ export const getUserDetails: RequestHandler = async (req, res) => {
           console.log('User ID for aggregation:', userId);
           console.log('User ID as ObjectId:', new mongoose.Types.ObjectId(userId));
 
-          
+
           const allOrders = await Order.find({}).limit(5);
           console.log('Sample orders in DB:', allOrders.map(o => ({
                id: o._id,
@@ -74,7 +75,7 @@ export const getUserDetails: RequestHandler = async (req, res) => {
                totalAmount: o.totalAmount
           })));
 
-         
+
           const totalSpent = await Order.aggregate([
                {
                     $match: {
@@ -116,7 +117,8 @@ export const updateUser: RequestHandler = async (req, res) => {
           ).select('-password');
 
           if (!user) {
-               return res.status(404).json({ message: 'User not found' });
+               res.status(404).json({ message: 'User not found' });
+               return;
           }
 
           res.json(user);
@@ -129,7 +131,8 @@ export const deleteUser: RequestHandler = async (req, res) => {
      try {
           const user = await User.findByIdAndDelete(req.params.id);
           if (!user) {
-               return res.status(404).json({ message: 'User not found' });
+               res.status(404).json({ message: 'User not found' });
+               return;
           }
           res.json({ message: 'User deleted' });
      } catch (err: any) {

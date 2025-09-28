@@ -23,7 +23,8 @@ export const updateOrderStatus: RequestHandler = async (req, res) => {
                .populate('items.product');
 
           if (!order) {
-               return res.status(404).json({ message: 'Order not found' });
+               res.status(404).json({ message: 'Order not found' });
+               return;
           }
 
           res.json(order);
@@ -37,7 +38,8 @@ export const deleteOrder: RequestHandler = async (req, res) => {
           const order = await Order.findByIdAndDelete(req.params.id);
 
           if (!order) {
-               return res.status(404).json({ message: 'Order not found' });
+               res.status(404).json({ message: 'Order not found' });
+               return;
           }
 
           res.json({ message: 'Order deleted successfully' });

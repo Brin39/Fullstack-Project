@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/User';
 
@@ -8,7 +8,7 @@ const generateToken = (id: string) => {
      });
 };
 
-export const registerUser = async (req: Request, res: Response) => {
+export const registerUser: RequestHandler = async (req, res) => {
      try {
           console.log('=== Registration Start ===');
           console.log('1. Raw request body:', req.body);
@@ -16,20 +16,22 @@ export const registerUser = async (req: Request, res: Response) => {
           const { name, email, password, role, adminCode } = req.body;
           console.log('2. Extracted data:', { name, email, role });
 
-          // Проверка существования пользователя
+          
           const userExists = await User.findOne({ email });
           if (userExists) {
                console.log('3. User already exists');
-               return res.status(400).json({ message: 'User already exists' });
+               res.status(400).json({ message: 'User already exists' });
+               return;
           }
 
-          // Проверка попытки создания админа
+         
           if (role === 'admin') {
                if (!adminCode || adminCode !== process.env.ADMIN_CREATION_CODE) {
                     console.log('4. Invalid admin code');
-                    return res.status(403).json({
+                    res.status(403).json({
                          message: 'Unauthorized attempt to create admin account'
                     });
+                    return;
                }
           }
 
@@ -58,19 +60,21 @@ export const registerUser = async (req: Request, res: Response) => {
      }
 };
 
-export const registerAdmin = async (req: Request, res: Response) => {
+export const registerAdmin: RequestHandler = async (req, res) => {
      try {
           const { name, email, password, adminCode } = req.body;
 
           if (!adminCode || adminCode !== process.env.ADMIN_CREATION_CODE) {
-               return res.status(403).json({
+               res.status(403).json({
                     message: 'Invalid admin creation code'
                });
+               return;
           }
 
           const userExists = await User.findOne({ email });
           if (userExists) {
-               return res.status(400).json({ message: 'User already exists' });
+               res.status(400).json({ message: 'User already exists' });
+               return;
           }
 
           const user = await User.create({
@@ -94,7 +98,7 @@ export const registerAdmin = async (req: Request, res: Response) => {
      }
 };
 
-export const loginUser = async (req: Request, res: Response) => {
+export const loginUser: RequestHandler = async (req, res) => {
      try {
           console.log('=== Login Attempt ===');
           console.log('1. Request body:', req.body);
@@ -107,7 +111,8 @@ export const loginUser = async (req: Request, res: Response) => {
 
           if (!user) {
                console.log('3. User not found');
-               return res.status(401).json({ message: 'Invalid email or password' });
+               res.status(401).json({ message: 'Invalid email or password' });
+               return;
           }
 
           // בדיקת סיסמה
@@ -116,7 +121,8 @@ export const loginUser = async (req: Request, res: Response) => {
 
           if (!isMatch) {
                console.log('5. Password does not match');
-               return res.status(401).json({ message: 'Invalid email or password' });
+               res.status(401).json({ message: 'Invalid email or password' });
+               return;
           }
 
           console.log('6. Login successful, sending response');
