@@ -17,10 +17,15 @@ connectDB();
 const app = express();
 
 // מינימום
-const allowedOrigin = process.env.CORS_ORIGIN || 'http://localhost:3000';
+const origins = (process.env.CORS_ORIGINS || process.env.CORS_ORIGIN || 'http://localhost:3000')
+  .split(',')
+  .map(o => o.trim());
 
 app.use(cors({
-     origin: allowedOrigin,
+  origin: (origin, cb) => {
+    if (!origin || origins.includes(origin)) return cb(null, true);
+    cb(new Error('Not allowed by CORS'));
+  },
      credentials: true,
      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
      allowedHeaders: ['Content-Type', 'Authorization']
