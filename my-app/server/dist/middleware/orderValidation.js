@@ -11,13 +11,15 @@ exports.VALID_ORDER_STATUSES = ['pending', 'processing', 'shipped', 'delivered',
 const validateOrderStatus = (req, res, next) => {
     const { status } = req.body;
     if (!status) {
-        return res.status(400).json({ message: 'Status is required' });
+        res.status(400).json({ message: 'Status is required' });
+        return;
     }
     if (!exports.VALID_ORDER_STATUSES.includes(status)) {
-        return res.status(400).json({
+        res.status(400).json({
             message: 'Invalid status',
             validStatuses: exports.VALID_ORDER_STATUSES
         });
+        return;
     }
     next();
 };
@@ -27,7 +29,8 @@ const validateStatusTransition = async (req, res, next) => {
     try {
         const order = await Order_1.default.findById(req.params.id);
         if (!order) {
-            return res.status(404).json({ message: 'Order not found' });
+            res.status(404).json({ message: 'Order not found' });
+            return;
         }
         const currentStatus = order.status;
         const newStatus = req.body.status;
@@ -40,10 +43,11 @@ const validateStatusTransition = async (req, res, next) => {
             cancelled: [] // לא ניתן לשנות את סטטוס הזמנה שנבטלה
         };
         if (!validTransitions[currentStatus].includes(newStatus)) {
-            return res.status(400).json({
+            res.status(400).json({
                 message: `Cannot change status from ${currentStatus} to ${newStatus}`,
                 validTransitions: validTransitions[currentStatus]
             });
+            return;
         }
         next();
     }

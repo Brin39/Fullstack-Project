@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/User';
 import { Types } from 'mongoose';
@@ -20,7 +20,7 @@ declare global {
      }
 }
 
-export const protect = async (req: Request, res: Response, next: NextFunction) => {
+export const protect: RequestHandler = async (req, res, next) => {
      try {
           let token;
 
@@ -32,7 +32,8 @@ export const protect = async (req: Request, res: Response, next: NextFunction) =
 
           if (!token) {
                console.log('No token provided');
-               return res.status(401).json({ message: 'Not authorized, no token' });
+               res.status(401).json({ message: 'Not authorized, no token' });
+               return;
           }
 
           const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_jwt_secret') as JwtPayload;
@@ -40,7 +41,8 @@ export const protect = async (req: Request, res: Response, next: NextFunction) =
 
           const user = await User.findById(decoded.id).select('-password');
           if (!user) {
-               return res.status(401).json({ message: 'User not found' });
+               res.status(401).json({ message: 'User not found' });
+               return;
           }
 
           req.user = {
@@ -56,13 +58,14 @@ export const protect = async (req: Request, res: Response, next: NextFunction) =
      }
 };
 
-export const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
+export const isAdmin: RequestHandler = async (req, res, next) => {
      try {
           console.log('Checking admin role. User:', req.user);
 
           if (!req.user) {
                console.log('No user found in request');
-               return res.status(401).json({ message: 'Not authorized' });
+               res.status(401).json({ message: 'Not authorized' });
+               return;
           }
 
           const user = await User.findById(req.user._id);
@@ -70,7 +73,8 @@ export const isAdmin = async (req: Request, res: Response, next: NextFunction) =
 
           if (!user || user.role !== 'admin') {
                console.log('Admin access denied. User role:', user?.role);
-               return res.status(403).json({ message: 'Access denied' });
+               res.status(403).json({ message: 'Access denied' });
+               return;
           }
 
           console.log('Admin access granted');

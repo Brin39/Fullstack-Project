@@ -16,13 +16,15 @@ const protect = async (req, res, next) => {
         }
         if (!token) {
             console.log('No token provided');
-            return res.status(401).json({ message: 'Not authorized, no token' });
+            res.status(401).json({ message: 'Not authorized, no token' });
+            return;
         }
         const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET || 'your_jwt_secret');
         console.log('Decoded token:', decoded);
         const user = await User_1.User.findById(decoded.id).select('-password');
         if (!user) {
-            return res.status(401).json({ message: 'User not found' });
+            res.status(401).json({ message: 'User not found' });
+            return;
         }
         req.user = {
             ...user.toObject(),
@@ -42,13 +44,15 @@ const isAdmin = async (req, res, next) => {
         console.log('Checking admin role. User:', req.user);
         if (!req.user) {
             console.log('No user found in request');
-            return res.status(401).json({ message: 'Not authorized' });
+            res.status(401).json({ message: 'Not authorized' });
+            return;
         }
         const user = await User_1.User.findById(req.user._id);
         console.log('Found user in database:', user);
         if (!user || user.role !== 'admin') {
             console.log('Admin access denied. User role:', user?.role);
-            return res.status(403).json({ message: 'Access denied' });
+            res.status(403).json({ message: 'Access denied' });
+            return;
         }
         console.log('Admin access granted');
         next();

@@ -10,14 +10,16 @@ export const validateOrderStatus: RequestHandler = (req, res, next) => {
      const { status } = req.body;
 
      if (!status) {
-          return res.status(400).json({ message: 'Status is required' });
+          res.status(400).json({ message: 'Status is required' });
+          return;
      }
 
      if (!VALID_ORDER_STATUSES.includes(status as OrderStatus)) {
-          return res.status(400).json({
+          res.status(400).json({
                message: 'Invalid status',
                validStatuses: VALID_ORDER_STATUSES
           });
+          return;
      }
 
      next();
@@ -28,7 +30,8 @@ export const validateStatusTransition: RequestHandler = async (req, res, next) =
      try {
           const order = await Order.findById(req.params.id);
           if (!order) {
-               return res.status(404).json({ message: 'Order not found' });
+               res.status(404).json({ message: 'Order not found' });
+               return;
           }
 
           const currentStatus = order.status;
@@ -44,10 +47,11 @@ export const validateStatusTransition: RequestHandler = async (req, res, next) =
           };
 
           if (!validTransitions[currentStatus as OrderStatus].includes(newStatus as OrderStatus)) {
-               return res.status(400).json({
+               res.status(400).json({
                     message: `Cannot change status from ${currentStatus} to ${newStatus}`,
                     validTransitions: validTransitions[currentStatus as OrderStatus]
                });
+               return;
           }
 
           next();
