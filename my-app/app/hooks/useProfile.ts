@@ -56,7 +56,8 @@ export async function getProfile(): Promise<any | null> {
           const result = await inFlight;
           inFlight = null;
           return result;
-     } catch (_e) {
+     } catch (e) {
+          console.error('getProfile failed', e);
           inFlight = null;
           return null;
      }

@@ -4,6 +4,7 @@ const nextConfig = {
      eslint: {
           ignoreDuringBuilds: true,
      },
+     productionBrowserSourceMaps: true,
      webpack: (config) => {
           config.resolve.fallback = {
                ...config.resolve.fallback,
