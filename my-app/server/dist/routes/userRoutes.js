@@ -13,19 +13,21 @@ const router = express_1.default.Router();
 router.post('/register', userValidation_1.validateRegistration, authController_1.registerUser);
 router.post('/login', userValidation_1.validateLogin, authController_1.loginUser);
 // בסיס פעולות משתמש
-router.get('/profile', authMiddleware_1.protect, async (req, res) => {
+const getProfileHandler = async (req, res) => {
     try {
         const user = await User_1.User.findById(req.user?._id).select('-password');
         if (!user) {
-            return res.status(401).json({ message: 'User not found' });
+            res.status(401).json({ message: 'User not found' });
+            return;
         }
         res.json(user);
     }
     catch (error) {
         res.status(500).json({ message: 'Error getting user profile' });
     }
-});
-router.put('/profile', authMiddleware_1.protect, userValidation_1.validateProfileUpdate, async (req, res) => {
+};
+router.get('/profile', authMiddleware_1.protect, getProfileHandler);
+const updateProfileHandler = async (req, res) => {
     try {
         const { name, email, address, phone } = req.body;
         const user = await User_1.User.findByIdAndUpdate(req.user?._id, { name, email, address, phone }, { new: true }).select('-password');
@@ -34,5 +36,6 @@ router.put('/profile', authMiddleware_1.protect, userValidation_1.validateProfil
     catch (error) {
         res.status(500).json({ message: 'Error updating profile' });
     }
-});
+};
+router.put('/profile', authMiddleware_1.protect, userValidation_1.validateProfileUpdate, updateProfileHandler);
 exports.default = router;
