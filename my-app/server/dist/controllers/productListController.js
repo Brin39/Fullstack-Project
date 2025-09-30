@@ -24,25 +24,22 @@ const getProducts = async (req, res) => {
         // מיון
         const sortOptions = {};
         sortOptions[sort] = order === 'desc' ? -1 : 1;
-        // Если указаны параметры пагинации, используем их, иначе возвращаем все продукты
-        if (page && limit) {
-            const products = await Product_1.Product.find(query)
-                .sort(sortOptions)
-                .skip((Number(page) - 1) * Number(limit))
-                .limit(Number(limit));
-            const total = await Product_1.Product.countDocuments(query);
-            res.json({
-                products,
-                currentPage: Number(page),
-                totalPages: Math.ceil(total / Number(limit)),
-                totalProducts: total
-            });
-        }
-        else {
-            // Возвращаем все продукты без пагинации
-            const products = await Product_1.Product.find(query).sort(sortOptions);
-            res.json({ products });
-        }
+        const pageNum = Number(page) || 1;
+        const limitNum = Math.min(Number(limit) || 20, 100);
+        const projection = 'name price images createdAt updatedAt bestOffer category stock description';
+        const products = await Product_1.Product.find(query)
+            .sort(sortOptions)
+            .skip((pageNum - 1) * limitNum)
+            .limit(limitNum)
+            .select(projection)
+            .lean();
+        const total = await Product_1.Product.countDocuments(query);
+        res.json({
+            products,
+            currentPage: pageNum,
+            totalPages: Math.ceil(total / limitNum),
+            totalProducts: total
+        });
     }
     catch (error) {
         console.error('Error in getProducts:', error);

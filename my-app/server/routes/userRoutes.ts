@@ -17,7 +17,7 @@ router.post('/login', validateLogin, loginUser as RequestHandler);
 // בסיס פעולות משתמש
 const getProfileHandler: RequestHandler = async (req, res) => {
      try {
-          const user = await User.findById(req.user?._id).select('-password');
+          const user = await User.findById(req.user?._id).select('-password').lean();
           if (!user) {
                res.status(401).json({ message: 'User not found' });
                return;
@@ -37,7 +37,7 @@ const updateProfileHandler: RequestHandler = async (req, res) => {
                req.user?._id,
                { name, email, address, phone },
                { new: true }
-          ).select('-password');
+          ).select('-password').lean();
 
           res.json(user);
      } catch (error) {

@@ -17,7 +17,7 @@ const productSchema = new mongoose.Schema({
           trim: true
      },
      images: {
-          type: [String], 
+          type: [String],
           default: []
      },
      category: {
@@ -41,5 +41,8 @@ const productSchema = new mongoose.Schema({
 
 
 productSchema.index({ name: 'text', description: 'text' });
+productSchema.index({ createdAt: -1 });
+productSchema.index({ price: 1 });
+productSchema.index({ bestOffer: 1, createdAt: -1 });
 
 export const Product = mongoose.model('Product', productSchema); 

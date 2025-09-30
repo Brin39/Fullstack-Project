@@ -44,4 +44,7 @@ const productSchema = new mongoose_1.default.Schema({
     timestamps: true
 });
 productSchema.index({ name: 'text', description: 'text' });
+productSchema.index({ createdAt: -1 });
+productSchema.index({ price: 1 });
+productSchema.index({ bestOffer: 1, createdAt: -1 });
 exports.Product = mongoose_1.default.model('Product', productSchema);

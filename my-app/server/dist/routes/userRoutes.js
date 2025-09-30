@@ -15,7 +15,7 @@ router.post('/login', userValidation_1.validateLogin, authController_1.loginUser
 // בסיס פעולות משתמש
 const getProfileHandler = async (req, res) => {
     try {
-        const user = await User_1.User.findById(req.user?._id).select('-password');
+        const user = await User_1.User.findById(req.user?._id).select('-password').lean();
         if (!user) {
             res.status(401).json({ message: 'User not found' });
             return;
@@ -30,7 +30,7 @@ router.get('/profile', authMiddleware_1.protect, getProfileHandler);
 const updateProfileHandler = async (req, res) => {
     try {
         const { name, email, address, phone } = req.body;
-        const user = await User_1.User.findByIdAndUpdate(req.user?._id, { name, email, address, phone }, { new: true }).select('-password');
+        const user = await User_1.User.findByIdAndUpdate(req.user?._id, { name, email, address, phone }, { new: true }).select('-password').lean();
         res.json(user);
     }
     catch (error) {

@@ -29,8 +29,7 @@ export default function Home() {
      const fetchProducts = async () => {
           try {
                setLoading(true);
-               const res = await fetch(buildApiUrl('/api/products'), {
-                    cache: 'no-store',
+               const res = await fetch(buildApiUrl('/api/products?page=1&limit=20'), {
                     headers: {
                          'Content-Type': 'application/json',
                     },
