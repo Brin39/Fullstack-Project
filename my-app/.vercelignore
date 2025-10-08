@@ -1,5 +1,0 @@
-eslint.config.mjs
-../*
-!../my-app/**
-!../vercel.json
-
