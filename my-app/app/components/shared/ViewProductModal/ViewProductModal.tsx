@@ -12,9 +12,10 @@ interface ViewProductModalProps {
      isOpen: boolean;
      onClose: () => void;
      onAddToCart: (productId: string, quantity: number) => void;
+     readOnly?: boolean;
 }
 
-export default function ViewProductModal({ product, isOpen, onClose, onAddToCart }: ViewProductModalProps) {
+export default function ViewProductModal({ product, isOpen, onClose, onAddToCart, readOnly = false }: ViewProductModalProps) {
      const [selectedImageIndex, setSelectedImageIndex] = useState(0);
      const [quantity, setQuantity] = useState(1);
 
@@ -37,15 +38,17 @@ export default function ViewProductModal({ product, isOpen, onClose, onAddToCart
           };
      }, [isOpen]);
 
-     const handleQuantityChange = (newQuantity: number) => {
-          if (newQuantity < 1) return;
-          if (product.stock && newQuantity > product.stock) return;
-          setQuantity(newQuantity);
-     };
+    const handleQuantityChange = (newQuantity: number) => {
+         if (readOnly) return;
+         if (newQuantity < 1) return;
+         if (product.stock && newQuantity > product.stock) return;
+         setQuantity(newQuantity);
+    };
 
-     const handleAddToCart = () => {
-          onAddToCart(product._id, quantity);
-     };
+    const handleAddToCart = () => {
+         if (readOnly) return;
+         onAddToCart(product._id, quantity);
+    };
 
      if (!isOpen) return null;
 
@@ -90,12 +93,13 @@ export default function ViewProductModal({ product, isOpen, onClose, onAddToCart
                                    stock={product.stock}
                                    isOutOfStock={isOutOfStock}
                                    total={total}
+                                   disabled={readOnly}
                               />
 
                               <button
                                    className={styles.addToCartButton}
                                    onClick={handleAddToCart}
-                                   disabled={isOutOfStock}
+                                   disabled={isOutOfStock || readOnly}
                               >
                                    {isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
                               </button>

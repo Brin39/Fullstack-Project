@@ -8,9 +8,10 @@ interface QuantityControlsProps {
      stock?: number;
      isOutOfStock: boolean;
      total: string | null;
+     disabled?: boolean;
 }
 
-export default function QuantityControls({ quantity, onQuantityChange, stock, isOutOfStock, total }: QuantityControlsProps) {
+export default function QuantityControls({ quantity, onQuantityChange, stock, isOutOfStock, total, disabled = false }: QuantityControlsProps) {
      return (
           <div className={styles.quantity}>
                <div className={styles.labels}>
@@ -23,7 +24,7 @@ export default function QuantityControls({ quantity, onQuantityChange, stock, is
                               className={styles.quantityButton}
                               type="button"
                               onClick={() => onQuantityChange(quantity - 1)}
-                              disabled={quantity <= 1 || isOutOfStock}
+                              disabled={quantity <= 1 || isOutOfStock || disabled}
                          >
                               -
                          </button>
@@ -35,13 +36,13 @@ export default function QuantityControls({ quantity, onQuantityChange, stock, is
                               className={styles.quantityInput}
                               min="1"
                               max={stock}
-                              disabled={isOutOfStock}
+                              disabled={isOutOfStock || disabled}
                          />
                          <button
                               className={styles.quantityButton}
                               type="button"
                               onClick={() => onQuantityChange(quantity + 1)}
-                              disabled={isOutOfStock || (stock !== undefined && quantity >= stock)}
+                              disabled={isOutOfStock || disabled || (stock !== undefined && quantity >= stock)}
                          >
                               +
                          </button>

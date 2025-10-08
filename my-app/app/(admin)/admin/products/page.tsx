@@ -98,6 +98,7 @@ export default function ProductsPage() {
                          onAddToCart={(productId, quantity) => {
                               alert(`Would add ${quantity} of product ${productId} to cart`);
                          }}
+                         readOnly
                     />
                )}
           </>
