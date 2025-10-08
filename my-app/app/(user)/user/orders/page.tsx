@@ -73,7 +73,7 @@ export default function OrdersPage() {
                               <div className={styles.error}>{error}</div>
                          ) : orders.length === 0 ? (
                               <div className={styles.noOrders}>
-                                   <p>You haven't placed any orders yet.</p>
+                                   <p>You haven&apos;t placed any orders yet.</p>
                               </div>
                          ) : (
                               <div className={styles.ordersList}>

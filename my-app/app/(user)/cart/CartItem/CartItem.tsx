@@ -135,4 +135,6 @@ const CartItem = memo<CartItemProps>(({ item, onQuantityChange, onRemove }) => {
      return prevProps.item.quantity === nextProps.item.quantity;
 });
 
+CartItem.displayName = 'CartItem';
+
 export default CartItem; 

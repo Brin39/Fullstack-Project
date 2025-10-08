@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Product } from '@/app/types/product';
 import { useAuth } from './useAuth';
 import { buildApiUrl } from '@/app/utils/apiBase';
@@ -10,11 +10,7 @@ export function useProducts() {
      const [error, setError] = useState<string | null>(null);
      const [searchQuery, setSearchQuery] = useState('');
 
-     useEffect(() => {
-          fetchProducts();
-     }, []);
-
-     const fetchProducts = async () => {
+     const fetchProducts = useCallback(async () => {
           try {
                const headers = getAuthHeaders();
                const response = await fetch(buildApiUrl('/api/admin/products'), {
@@ -40,7 +36,13 @@ export function useProducts() {
           } finally {
                setLoading(false);
           }
-     };
+     }, [getAuthHeaders, handleAuthError]);
+
+     useEffect(() => {
+          fetchProducts();
+     }, [fetchProducts]);
+
+
 
      const handleSearch = async (query: string) => {
           try {

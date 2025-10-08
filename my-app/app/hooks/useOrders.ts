@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Order } from '@/app/(admin)/admin/orders/types';
 import { OrderStatus } from '@/app/utils/orderUtils';
 import { useAuth } from './useAuth';
@@ -11,17 +11,7 @@ export function useOrders() {
      const [error, setError] = useState<string | null>(null);
      const [searchQuery, setSearchQuery] = useState('');
 
-     useEffect(() => {
-          if (!checkAuth()) {
-               setError('Please login to access this page');
-               setLoading(false);
-               return;
-          }
-
-          fetchOrders();
-     }, []);
-
-     const fetchOrders = async () => {
+     const fetchOrders = useCallback(async () => {
           try {
                const headers = getAuthHeaders();
                const response = await fetch(buildApiUrl('/api/admin/orders'), {
@@ -38,7 +28,19 @@ export function useOrders() {
           } finally {
                setLoading(false);
           }
-     };
+     }, [getAuthHeaders, handleAuthError]);
+
+     useEffect(() => {
+          if (!checkAuth()) {
+               setError('Please login to access this page');
+               setLoading(false);
+               return;
+          }
+
+          fetchOrders();
+     }, [checkAuth, fetchOrders]);
+
+
 
      const handleUpdateStatus = async (orderId: string, currentStatus: OrderStatus) => {
           const statusTransitions: Record<OrderStatus, OrderStatus> = {

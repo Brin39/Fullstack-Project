@@ -64,7 +64,7 @@ function LoginContent() {
                          </button>
                     </form>
                     <p className={styles.switchText}>
-                         Don't have an account?{' '}
+                         Don&apos;t have an account?{' '}
                          <a href="/register" className={styles.switchLink}>
                               Register
                          </a>

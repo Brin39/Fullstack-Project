@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useCartContext } from '@/app/(user)/cart/CartContext';
 import { useAuth } from './useAuth';
 import { CartProduct } from '@/app/types/cart';
@@ -13,7 +13,7 @@ export const useCart = () => {
      const [isLoading, setIsLoading] = useState(true);
      const [error, setError] = useState<string | null>(null);
 
-     const fetchCartItems = async () => {
+     const fetchCartItems = useCallback(async () => {
           try {
                setError(null);
                const headers = getAuthHeaders();
@@ -33,7 +33,7 @@ export const useCart = () => {
           } finally {
                setIsLoading(false);
           }
-     };
+     }, [getAuthHeaders, handleAuthError]);
 
      const handleQuantityChange = async (productId: string, quantity: number) => {
           try {
@@ -116,7 +116,7 @@ export const useCart = () => {
 
      useEffect(() => {
           fetchCartItems();
-     }, []);
+     }, [fetchCartItems]);
 
      useEffect(() => {
           updateCartItemCount(cartItems.length);
