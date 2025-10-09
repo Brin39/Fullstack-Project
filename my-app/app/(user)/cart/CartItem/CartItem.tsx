@@ -3,7 +3,6 @@
 import { useState, memo, useCallback } from 'react';
 import Image from 'next/image';
 import ProductInfoModal from '@/app/components/shared/ProductInfoModal/ProductInfoModal';
-import AlertModal from '@/app/components/shared/AlertModal/AlertModal';
 import ActionButtons from '@/app/components/shared/ActionButtons/ActionButtons';
 import styles from './CartItem.module.css';
 
@@ -27,7 +26,6 @@ interface CartItemProps {
 
 const CartItem = memo<CartItemProps>(({ item, onQuantityChange, onRemove }) => {
      const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-     const [isAlertOpen, setIsAlertOpen] = useState(false);
 
      const total = (item.product.price * item.quantity).toFixed(2);
      const isInStock = (item.product.stock || 0) > 0;
@@ -41,9 +39,6 @@ const CartItem = memo<CartItemProps>(({ item, onQuantityChange, onRemove }) => {
 
      const handleOpenViewModal = () => setIsViewModalOpen(true);
      const handleCloseViewModal = () => setIsViewModalOpen(false);
-
-     const handleOpenAlert = () => setIsAlertOpen(true);
-     const handleCloseAlert = () => setIsAlertOpen(false);
 
      const handleRemove = useCallback(() => {
           onRemove(item.product._id);
@@ -103,7 +98,7 @@ const CartItem = memo<CartItemProps>(({ item, onQuantityChange, onRemove }) => {
                               <div className={styles.actions}>
                                    <ActionButtons
                                         onView={handleOpenViewModal}
-                                        onDelete={handleOpenAlert}
+                                        onDelete={handleRemove}
                                         viewText="View Product"
                                         deleteText="Remove"
                                         showEdit={false}
@@ -123,12 +118,6 @@ const CartItem = memo<CartItemProps>(({ item, onQuantityChange, onRemove }) => {
                     onClose={handleCloseViewModal}
                />
 
-               <AlertModal
-                    isOpen={isAlertOpen}
-                    onClose={handleCloseAlert}
-                    onConfirm={handleRemove}
-                    message={`Remove "${item.product.name}" from cart?`}
-               />
           </>
      );
 }, (prevProps, nextProps) => {

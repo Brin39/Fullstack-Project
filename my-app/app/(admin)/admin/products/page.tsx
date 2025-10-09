@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './page.module.css';
 import AdminPageLayout from '@/app/components/admin/AdminPageLayout';
 import EditProductModal from './EditProductModal/EditProductModal';
@@ -43,7 +43,13 @@ export default function ProductsPage() {
           }
      };
 
-     if (loading) return <div className={styles.loading}>Loading...</div>;
+     useEffect(() => {
+          const timer = setTimeout(() => {
+               handleSearch(searchQuery);
+          }, 400);
+          return () => clearTimeout(timer);
+     }, [searchQuery]);
+
      if (error) return <div className={styles.error}>{error}</div>;
 
      return (
@@ -55,7 +61,6 @@ export default function ProductsPage() {
                          value: searchQuery,
                          onChange: (value) => {
                               setSearchQuery(value);
-                              handleSearch(value);
                          }
                     }}
                     addButtonProps={{
@@ -67,6 +72,9 @@ export default function ProductsPage() {
                          count: products.length
                     }}
                >
+                    {loading && (
+                         <div className={styles.loading}>Loading...</div>
+                    )}
                     <ProductList
                          products={products}
                          onEdit={handleEdit}

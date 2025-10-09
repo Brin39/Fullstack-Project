@@ -15,7 +15,7 @@ export function validateProduct(values: ProductFormData): Partial<Record<keyof P
           errors.price = 'Price must be greater than 0';
      }
 
-     if (!values.stock || values.stock < 0) {
+     if (values.stock == null || values.stock < 0) {
           errors.stock = 'Stock must be 0 or greater';
      }
 

@@ -7,15 +7,6 @@ import { Product } from '../models/Product';
 
 const router = express.Router();
 
-// נתיבים ציבוריים
-router.get('/', getProducts as RequestHandler);
-router.get('/:id', getProductById as RequestHandler);
-
-// נתיבי ניהול
-router.post('/', protect as RequestHandler, isAdmin as RequestHandler, createProduct as RequestHandler);
-router.put('/:id', protect as RequestHandler, isAdmin as RequestHandler, updateProduct as RequestHandler);
-router.delete('/:id', protect as RequestHandler, isAdmin as RequestHandler, deleteProduct as RequestHandler);
-
 // מסלול לחיפוש לפי מילות מפתח
 const searchHandler: RequestHandler = async (req, res) => {
      try {
@@ -25,32 +16,45 @@ const searchHandler: RequestHandler = async (req, res) => {
                return;
           }
 
-          const products = await Product.find(
-               { $text: { $search: query as string } },
-               { score: { $meta: "textScore" } }
-          )
-               .sort({ score: { $meta: "textScore" } })
-               .limit(20);
+          // נסה חיפוש טקסטואלי אם יש אינדקס טקסט; אחרת ניפול לחיפוש רגולרי
+          try {
+               const textResults = await Product.find(
+                    { $text: { $search: query as string } },
+                    { score: { $meta: 'textScore' } }
+               )
+                    .sort({ score: { $meta: 'textScore' } })
+                    .limit(20);
 
-          // אם אין תוצאות לחיפוש טקסט, נסה חיפוש על ידי ביטוי רגולרי
-          if (products.length === 0) {
-               const regexProducts = await Product.find({
-                    $or: [
-                         { name: { $regex: query, $options: 'i' } },
-                         { description: { $regex: query, $options: 'i' } }
-                    ]
-               }).limit(20);
-               res.json(regexProducts);
-               return;
+               if (textResults.length > 0) {
+                    res.json(textResults);
+                    return;
+               }
+          } catch (_err) {
+               // אין אינדקס טקסט או שגיאה אחרת – נמשיך לחיפוש רגולרי
           }
 
-          res.json(products);
+          const regexProducts = await Product.find({
+               $or: [
+                    { name: { $regex: query as string, $options: 'i' } },
+                    { description: { $regex: query as string, $options: 'i' } }
+               ]
+          }).limit(20);
+          res.json(regexProducts);
      } catch (error) {
           console.error('Search error:', error);
           res.status(500).json({ message: 'Error searching products' });
      }
 };
 
+// נתיבים ציבוריים
+router.get('/', getProducts as RequestHandler);
+// שים את /search לפני /:id כדי למנוע התנגשות עם נתיב דינמי
 router.get('/search', searchHandler as RequestHandler);
+router.get('/:id', getProductById as RequestHandler);
 
-export default router; 
+// נתיבי ניהול
+router.post('/', protect as RequestHandler, isAdmin as RequestHandler, createProduct as RequestHandler);
+router.put('/:id', protect as RequestHandler, isAdmin as RequestHandler, updateProduct as RequestHandler);
+router.delete('/:id', protect as RequestHandler, isAdmin as RequestHandler, deleteProduct as RequestHandler);
+
+export default router;
