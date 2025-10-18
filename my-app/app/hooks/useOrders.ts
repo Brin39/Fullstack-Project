@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Order } from '@/app/(admin)/admin/orders/types';
+import { Order } from '@/app/types/order';
 import { OrderStatus } from '@/app/utils/orderUtils';
 import { useAuth } from './useAuth';
 import { buildApiUrl } from '@/app/utils/apiBase';
@@ -107,11 +107,17 @@ export function useOrders() {
           }
      };
 
-     const filteredOrders = orders.filter(order =>
-          order.user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          order.user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          order._id.toLowerCase().includes(searchQuery.toLowerCase())
-     );
+     const normalizedQuery = searchQuery.trim().toLowerCase();
+     const filteredOrders = orders.filter(order => {
+          const userName = order.user?.name?.toLowerCase() ?? '';
+          const userEmail = order.user?.email?.toLowerCase() ?? '';
+          const orderId = order._id?.toLowerCase() ?? '';
+          return (
+               userName.includes(normalizedQuery) ||
+               userEmail.includes(normalizedQuery) ||
+               orderId.includes(normalizedQuery)
+          );
+     });
 
      return {
           orders: filteredOrders,
