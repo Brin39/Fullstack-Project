@@ -42,7 +42,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
      }, []);
 
      const updateCartItemCount = useCallback((count: number) => {
-          setCartItemCount(Math.max(0, count)); 
+          setCartItemCount(Math.max(0, count));
      }, []);
 
      const incrementCartCount = useCallback(() => {
