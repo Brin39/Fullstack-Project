@@ -56,7 +56,6 @@ export const getProducts = async (req: Request, res: Response) => {
                totalProducts: total
           });
      } catch (error) {
-          console.error('Error in getProducts:', error);
           res.status(500).json({
                message: 'Error getting products',
                error: error instanceof Error ? error.message : 'Unknown error'

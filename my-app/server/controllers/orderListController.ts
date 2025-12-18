@@ -33,7 +33,6 @@ export const getUserOrders: RequestHandler = async (req, res) => {
                totalOrders: total
           });
      } catch (error) {
-          console.error('Error fetching user orders:', error);
           res.status(500).json({ message: 'Error fetching user orders' });
      }
 };
@@ -66,7 +65,6 @@ export const getAllOrders: RequestHandler = async (req, res) => {
                totalOrders: total
           });
      } catch (error) {
-          console.error('Error fetching all orders:', error);
           res.status(500).json({ message: 'Error fetching all orders' });
      }
 };
@@ -82,7 +80,6 @@ export const getRecentOrders: RequestHandler = async (req, res) => {
 
           res.json(recentOrders);
      } catch (error) {
-          console.error('Error fetching recent orders:', error);
           res.status(500).json({ message: 'Error fetching recent orders' });
      }
 }; 

@@ -41,7 +41,6 @@ const searchHandler: RequestHandler = async (req, res) => {
           }).limit(20);
           res.json(regexProducts);
      } catch (error) {
-          console.error('Search error:', error);
           res.status(500).json({ message: 'Error searching products' });
      }
 };

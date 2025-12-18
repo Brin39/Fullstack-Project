@@ -17,7 +17,6 @@ const router = express.Router();
 
 // בדיקת זכויות מנהל
 router.get('/check-admin', protect, isAdmin, (req, res) => {
-     console.log('User in check-admin:', req.user);
      res.json({
           message: 'Admin access granted',
           name: req.user?.name,

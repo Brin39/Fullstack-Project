@@ -56,7 +56,6 @@ export const validateStatusTransition: RequestHandler = async (req, res, next) =
 
           next();
      } catch (error) {
-          console.error('Error validating status transition:', error);
           res.status(500).json({ message: 'Error validating status transition' });
      }
 }; 

@@ -39,42 +39,23 @@ export const getUsers: RequestHandler = async (req, res) => {
 export const getUserDetails: RequestHandler = async (req, res) => {
      try {
           const userId = req.params.id;
-          console.log('Getting user details for ID:', userId);
 
-          
           const user = await User.findById(userId).select('-password');
           if (!user) {
-               console.log('User not found');
                res.status(404).json({ message: 'User not found' });
                return;
           }
-          console.log('User found:', user.name);
 
-          // קבלת סטורי פעילות משתמש
           const orders = await Order.find({
                user: new mongoose.Types.ObjectId(userId)
           })
                .populate('items.product', 'name price')
                .sort({ createdAt: -1 })
                .limit(10);
-          console.log('Orders found:', orders.length);
-
 
           const totalOrders = await Order.countDocuments({
                user: new mongoose.Types.ObjectId(userId)
           });
-
-          console.log('User ID for aggregation:', userId);
-          console.log('User ID as ObjectId:', new mongoose.Types.ObjectId(userId));
-
-
-          const allOrders = await Order.find({}).limit(5);
-          console.log('Sample orders in DB:', allOrders.map(o => ({
-               id: o._id,
-               user: o.user,
-               totalAmount: o.totalAmount
-          })));
-
 
           const totalSpent = await Order.aggregate([
                {
@@ -90,8 +71,6 @@ export const getUserDetails: RequestHandler = async (req, res) => {
                }
           ]);
 
-          console.log('Total orders:', totalOrders, 'Total spent:', totalSpent);
-
           const userDetails = {
                ...user.toObject(),
                orders: orders,
@@ -99,10 +78,8 @@ export const getUserDetails: RequestHandler = async (req, res) => {
                totalSpent: totalSpent.length > 0 ? totalSpent[0].total : 0
           };
 
-          console.log('Sending user details');
           res.json(userDetails);
      } catch (err: any) {
-          console.error('Error in getUserDetails:', err);
           res.status(500).json({ message: err.message });
      }
 };

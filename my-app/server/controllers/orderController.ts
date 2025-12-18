@@ -43,7 +43,6 @@ export const createOrder: RequestHandler = async (req, res) => {
 
           res.status(201).json(order);
      } catch (error) {
-          console.error('Error creating order:', error);
           res.status(500).json({ message: 'Error creating order' });
      }
 };
@@ -73,7 +72,6 @@ export const getOrderById: RequestHandler = async (req, res) => {
 
           res.json(order);
      } catch (error) {
-          console.error('Error getting order:', error);
           res.status(500).json({ message: 'Error getting order' });
      }
 };
@@ -91,7 +89,6 @@ export const getUserOrders: RequestHandler = async (req, res) => {
 
           res.json(orders);
      } catch (error) {
-          console.error('Error fetching orders:', error);
           res.status(500).json({ message: 'Error fetching orders' });
      }
 };

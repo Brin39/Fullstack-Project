@@ -1,6 +1,9 @@
 import express from 'express';
 import compression from 'compression';
 import cors from 'cors';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import mongoSanitize from 'express-mongo-sanitize';
 import dotenv from 'dotenv';
 import connectDB from './config/db';
 import userRoutes from './routes/userRoutes';
@@ -9,15 +12,39 @@ import orderRoutes from './routes/orderRoutes';
 import cartRoutes from './routes/cartRoutes';
 import adminRoutes from './routes/admin';
 
-// טוען משתני סביבה
+// Load environment variables
 dotenv.config();
 
-// חיבור לבסיס הנתונים
+// Connect to database
 connectDB();
 
 const app = express();
 
-// מינימום
+// Security middleware - Helmet for HTTP headers
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+  contentSecurityPolicy: false // Disable for API
+}));
+
+// Rate limiting - prevent brute force attacks
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: { message: 'Too many requests, please try again later' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Stricter rate limit for auth routes
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10, // Limit each IP to 10 login attempts per windowMs
+  message: { message: 'Too many login attempts, please try again later' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// CORS configuration
 const origins = (process.env.CORS_ORIGINS || process.env.CORS_ORIGIN || 'http://localhost:3000')
   .split(',')
   .map(o => o.trim());
@@ -32,19 +59,32 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-
+// Compression for responses
 app.use(compression());
 
+// Body parsing
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
+// Sanitize data - prevent NoSQL injection
+app.use(mongoSanitize());
+
+// Static files
 app.use(express.static('public'));
 
-// מסלול בסיס
+// Health check route
 app.get('/', (_, res) => {
   res.json({ message: 'API is working' });
 });
 
-// חיבור מסלולים
+// Apply rate limiting to API routes
+app.use('/api/', apiLimiter);
+
+// Apply stricter rate limiting to auth routes
+app.use('/api/users/login', authLimiter);
+app.use('/api/users/register', authLimiter);
+
+// Routes
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);

@@ -18,7 +18,6 @@ export const updateOrderStatus: RequestHandler = async (req, res) => {
 
           res.json(order);
      } catch (error) {
-          console.error('Error updating order status:', error);
           res.status(500).json({ message: 'Error updating order status' });
      }
 }; 

@@ -44,7 +44,6 @@ export const addToCart: RequestHandler = async (req, res) => {
 
           res.status(200).json(populatedCart);
      } catch (error) {
-          console.error('Error adding to cart:', error);
           res.status(500).json({ message: 'Error adding to cart' });
      }
 };
@@ -66,7 +65,6 @@ export const getCart: RequestHandler = async (req, res) => {
 
           res.status(200).json(cart);
      } catch (error) {
-          console.error('Error getting cart:', error);
           res.status(500).json({ message: 'Error getting cart' });
      }
 };
@@ -115,7 +113,6 @@ export const updateCartItem: RequestHandler = async (req, res) => {
 
           res.status(200).json(updatedCart);
      } catch (error) {
-          console.error('Error updating cart item:', error);
           res.status(500).json({ message: 'Error updating cart item' });
      }
 };
@@ -146,7 +143,6 @@ export const removeFromCart: RequestHandler = async (req, res) => {
 
           res.status(200).json(updatedCart);
      } catch (error) {
-          console.error('Error removing from cart:', error);
           res.status(500).json({ message: 'Error removing from cart' });
      }
 };
@@ -173,7 +169,6 @@ export const clearCart: RequestHandler = async (req, res) => {
 
           res.status(200).json(updatedCart);
      } catch (error) {
-          console.error('Error clearing cart:', error);
           res.status(500).json({ message: 'Error clearing cart' });
      }
 }; 
