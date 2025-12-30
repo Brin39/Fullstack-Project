@@ -29,7 +29,7 @@ const UserCard: React.FC<UserCardProps> = ({ user, onView, onDelete }) => {
      };
 
      return (
-          <div className={styles.card}>
+          <div className={styles.card} data-testid={`admin-user-row-${user._id}`}>
                <div className={styles.cardHeader}>
                     <div className={styles.avatar}>
                          <span className={styles.initials}>
@@ -37,13 +37,14 @@ const UserCard: React.FC<UserCardProps> = ({ user, onView, onDelete }) => {
                          </span>
                     </div>
                     <div className={styles.userInfo}>
-                         <h3 className={styles.name}>{user.name}</h3>
-                         <p className={styles.email}>{user.email}</p>
+                         <h3 className={styles.name} data-testid={`admin-user-name-${user._id}`}>{user.name}</h3>
+                         <p className={styles.email} data-testid={`admin-user-email-${user._id}`}>{user.email}</p>
                          <div className={styles.meta}>
                               <span className={styles.id}>ID: {user._id}</span>
                               <span
                                    className={styles.role}
                                    style={{ color: getRoleColor(user.role) }}
+                                   data-testid={`admin-user-role-${user._id}`}
                               >
                                    {getRoleText(user.role)}
                               </span>
@@ -54,7 +55,7 @@ const UserCard: React.FC<UserCardProps> = ({ user, onView, onDelete }) => {
                               className={styles.statusDot}
                               style={{ backgroundColor: status.color }}
                          />
-                         <span className={styles.statusText}>{status.text}</span>
+                         <span className={styles.statusText} data-testid={`admin-user-status-${user._id}`}>{status.text}</span>
                     </div>
                </div>
 
@@ -65,6 +66,7 @@ const UserCard: React.FC<UserCardProps> = ({ user, onView, onDelete }) => {
                          disabled={isDeleting}
                          deleteText={isDeleting ? 'Deleting...' : 'Delete'}
                          showEdit={false}
+                         testIdPrefix={`admin-user-${user._id}`}
                     />
                </div>
           </div>

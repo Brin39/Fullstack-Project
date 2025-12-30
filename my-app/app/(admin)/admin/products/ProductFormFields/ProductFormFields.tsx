@@ -75,6 +75,7 @@ export default function ProductFormFields({
                                    onChange={handleInputChange}
                                    className={`${field.className} ${errors[field.id] ? styles.error : ''}`}
                                    required={field.required}
+                                   data-testid={`product-${field.id}-input`}
                               />
                          ) : (
                               <input
@@ -85,6 +86,7 @@ export default function ProductFormFields({
                                    onChange={handleInputChange}
                                    className={`${field.className} ${errors[field.id] ? styles.error : ''}`}
                                    required={field.required}
+                                   data-testid={`product-${field.id}-input`}
                                    {...(field.type === 'number' && { min: field.min, step: field.step })}
                               />
                          )}
@@ -102,6 +104,7 @@ export default function ProductFormFields({
                               checked={values.bestOffer || false}
                               onChange={handleInputChange}
                               className={styles.checkbox}
+                              data-testid="product-bestOffer-checkbox"
                          />
                          Best Offer
                     </label>

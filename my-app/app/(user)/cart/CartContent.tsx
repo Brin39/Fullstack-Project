@@ -57,12 +57,12 @@ export default function CartContent({
      };
 
      return (
-          <div className={styles.content}>
+          <div className={styles.content} data-testid="cart-content">
                {cartItems.length === 0 ? (
-                    <p className={styles.emptyCart}>Your cart is empty</p>
+                    <p className={styles.emptyCart} data-testid="empty-cart-message">Your cart is empty</p>
                ) : (
                     <>
-                         <div className={styles.cartItems}>
+                         <div className={styles.cartItems} data-testid="cart-items-list">
                               {cartItems.map(item => (
                                    <CartItem
                                         key={item._id}
@@ -72,21 +72,23 @@ export default function CartContent({
                                    />
                               ))}
                          </div>
-                         <div className={styles.summary}>
+                         <div className={styles.summary} data-testid="cart-summary">
                               <h2>Order Summary</h2>
                               <div className={styles.total}>
                                    <span>Total:</span>
-                                   <span>${totalAmount.toFixed(2)}</span>
+                                   <span data-testid="cart-total">${totalAmount.toFixed(2)}</span>
                               </div>
                               <button
                                    className={styles.checkoutButton}
                                    onClick={handleCheckout}
+                                   data-testid="checkout-btn"
                               >
                                    Proceed to Checkout
                               </button>
                               <button
                                    className={styles.clearCartButton}
                                    onClick={onClearCart}
+                                   data-testid="clear-cart-btn"
                               >
                                    Clear Cart
                               </button>

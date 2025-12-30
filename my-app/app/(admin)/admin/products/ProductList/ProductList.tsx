@@ -11,16 +11,16 @@ interface ProductListProps {
 
 export default function ProductList({ products, onEdit, onView, onDelete }: ProductListProps) {
      return (
-          <div className={styles.productsList}>
+          <div className={styles.productsList} data-testid="admin-products-list">
                {products.map((product) => (
-                    <div key={product._id} className={styles.productCard}>
+                    <div key={product._id} className={styles.productCard} data-testid={`admin-product-row-${product._id}`}>
                          <div className={styles.productInfo}>
                               <div className={styles.productMain}>
-                                   <h3>{product.name}</h3>
+                                   <h3 data-testid={`admin-product-name-${product._id}`}>{product.name}</h3>
                                    <p className={styles.productId}>ID: {product._id.slice(-6)}</p>
                               </div>
                               <div className={styles.productDetails}>
-                                   <span className={styles.stock}>
+                                   <span className={styles.stock} data-testid={`admin-product-stock-${product._id}`}>
                                         {product.stock > 0 ? 'In stock' : 'Out of stock'}
                                    </span>
                                    <span className={styles.date}>
@@ -36,6 +36,7 @@ export default function ProductList({ products, onEdit, onView, onDelete }: Prod
                                    onView={() => onView(product)}
                                    onEdit={() => onEdit(product)}
                                    onDelete={() => onDelete(product)}
+                                   testIdPrefix={`admin-product-${product._id}`}
                               />
                          </div>
                     </div>

@@ -38,13 +38,14 @@ export default function RegisterForm({ onSubmit, isAdminMode, error }: RegisterF
      };
 
      return (
-          <form onSubmit={handleSubmit} className={styles.form}>
-               {error && <div className={styles.error}>{error}</div>}
+          <form onSubmit={handleSubmit} className={styles.form} data-testid="register-form">
+               {error && <div className={styles.error} data-testid="error-message">{error}</div>}
                <div className={styles.formGroup}>
                     <label htmlFor="name">Name</label>
                     <input
                          type="text"
                          id="name"
+                         data-testid="name-input"
                          value={formData.name}
                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                          required
@@ -55,6 +56,7 @@ export default function RegisterForm({ onSubmit, isAdminMode, error }: RegisterF
                     <input
                          type="email"
                          id="email"
+                         data-testid="email-input"
                          value={formData.email}
                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                          required
@@ -66,6 +68,7 @@ export default function RegisterForm({ onSubmit, isAdminMode, error }: RegisterF
                     value={formData.password}
                     onChange={(value) => setFormData({ ...formData, password: value })}
                     required
+                    testId="password-input"
                />
                <PasswordField
                     id="confirmPassword"
@@ -73,6 +76,7 @@ export default function RegisterForm({ onSubmit, isAdminMode, error }: RegisterF
                     value={formData.confirmPassword}
                     onChange={(value) => setFormData({ ...formData, confirmPassword: value })}
                     required
+                    testId="confirm-password-input"
                />
                {isAdminMode && (
                     <PasswordField
@@ -81,9 +85,10 @@ export default function RegisterForm({ onSubmit, isAdminMode, error }: RegisterF
                          value={formData.adminCode || ''}
                          onChange={(value) => setFormData({ ...formData, adminCode: value })}
                          required
+                         testId="admin-code-input"
                     />
                )}
-               <button type="submit" className={styles.submitButton}>
+               <button type="submit" className={styles.submitButton} data-testid="submit-btn">
                     {isAdminMode ? 'Register as Admin' : 'Register'}
                </button>
           </form>

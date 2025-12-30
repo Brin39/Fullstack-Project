@@ -70,7 +70,7 @@ export default function RegisterPage() {
                     />
                     <p className={styles.switchText}>
                          Already have an account?{' '}
-                         <a href="/login" className={styles.switchLink}>
+                         <a href="/login" className={styles.switchLink} data-testid="login-link">
                               Login
                          </a>
                     </p>

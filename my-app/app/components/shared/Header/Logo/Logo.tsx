@@ -8,7 +8,7 @@ interface LogoProps {
 export default function Logo({ isAuthenticated }: LogoProps) {
      return (
           <div className={styles.logo}>
-               <Link href={isAuthenticated ? "/user" : "/"} className={styles.logoLink}>
+               <Link href={isAuthenticated ? "/user" : "/"} className={styles.logoLink} data-testid="logo">
                     <svg
                          width="40"
                          height="40"

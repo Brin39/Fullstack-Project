@@ -31,11 +31,11 @@ export default function AdminPageLayout({
      countProps
 }: AdminPageLayoutProps) {
      return (
-          <div className={styles.layout}>
+          <div className={styles.layout} data-testid="admin-page-layout">
                <AdminNavbar />
                <div className={styles.content}>
                     <div className={styles.header}>
-                         <h1>{title}</h1>
+                         <h1 data-testid="admin-page-title">{title}</h1>
                          <div className={styles.actions}>
                               {searchProps && (
                                    <SearchInput
@@ -45,7 +45,7 @@ export default function AdminPageLayout({
                                    />
                               )}
                               {countProps && (
-                                   <div className={styles.count}>
+                                   <div className={styles.count} data-testid="admin-count">
                                         <span>{countProps.label}: {countProps.count}</span>
                                    </div>
                               )}
@@ -53,6 +53,7 @@ export default function AdminPageLayout({
                                    <button
                                         className={styles.addButton}
                                         onClick={addButtonProps.onClick}
+                                        data-testid="admin-add-btn"
                                    >
                                         {addButtonProps.text}
                                    </button>

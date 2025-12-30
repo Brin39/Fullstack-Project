@@ -15,7 +15,7 @@ export default function Header({ hideAuth = false, onSearch }: HeaderProps) {
      const { isAuthenticated } = useAuthStatus();
 
      return (
-          <header className={styles.header}>
+          <header className={styles.header} data-testid="header">
                <Logo isAuthenticated={isAuthenticated} />
                <SearchBar onSearch={onSearch} />
                {!hideAuth && <Navigation isAuthenticated={isAuthenticated} />}

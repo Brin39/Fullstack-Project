@@ -12,7 +12,7 @@ interface UserListProps {
 const UserList: React.FC<UserListProps> = ({ users, onView, onDelete }) => {
      if (users.length === 0) {
           return (
-               <div className={styles.empty}>
+               <div className={styles.empty} data-testid="no-users-message">
                     <div className={styles.emptyIcon}>👥</div>
                     <h3>No Users</h3>
                     <p>No users found in the system</p>
@@ -21,7 +21,7 @@ const UserList: React.FC<UserListProps> = ({ users, onView, onDelete }) => {
      }
 
      return (
-          <div className={styles.container}>
+          <div className={styles.container} data-testid="admin-users-list">
                {users.map((user) => (
                     <UserCard
                          key={user._id}

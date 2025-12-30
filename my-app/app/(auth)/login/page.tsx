@@ -40,13 +40,14 @@ function LoginContent() {
                <AuthHeader />
                <div className={styles.container}>
                     <h1 className={styles.title}>Login to Your Account</h1>
-                    <form onSubmit={handleSubmit} className={formStyles.form}>
-                         {error && <div className={formStyles.error}>{error}</div>}
+                    <form onSubmit={handleSubmit} className={formStyles.form} data-testid="login-form">
+                         {error && <div className={formStyles.error} data-testid="error-message">{error}</div>}
                          <div className={formStyles.formGroup}>
                               <label htmlFor="email">Email</label>
                               <input
                                    type="email"
                                    id="email"
+                                   data-testid="email-input"
                                    value={formData.email}
                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                    required
@@ -58,14 +59,15 @@ function LoginContent() {
                               value={formData.password}
                               onChange={(value) => setFormData({ ...formData, password: value })}
                               required
+                              testId="password-input"
                          />
-                         <button type="submit" className={formStyles.submitButton}>
+                         <button type="submit" className={formStyles.submitButton} data-testid="submit-btn">
                               Login
                          </button>
                     </form>
                     <p className={styles.switchText}>
                          Don&apos;t have an account?{' '}
-                         <a href="/register" className={styles.switchLink}>
+                         <a href="/register" className={styles.switchLink} data-testid="register-link">
                               Register
                          </a>
                     </p>

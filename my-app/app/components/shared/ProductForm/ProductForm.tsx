@@ -42,9 +42,9 @@ export default function ProductForm({
      }, [initialData, setValues]);
 
      return (
-          <form onSubmit={handleSubmit} className={styles.form}>
+          <form onSubmit={handleSubmit} className={styles.form} data-testid="product-form">
                {Object.keys(errors).length > 0 && (
-                    <div className={styles.error}>
+                    <div className={styles.error} data-testid="product-form-error">
                          {Object.values(errors).join(', ')}
                     </div>
                )}
@@ -68,6 +68,7 @@ export default function ProductForm({
                          type="button"
                          onClick={onCancel}
                          className={styles.cancelButton}
+                         data-testid="product-form-cancel-btn"
                     >
                          Cancel
                     </button>
@@ -75,6 +76,7 @@ export default function ProductForm({
                          type="submit"
                          className={styles.saveButton}
                          disabled={isSubmitting}
+                         data-testid="product-form-submit-btn"
                     >
                          {isSubmitting ? loadingButtonText : submitButtonText}
                     </button>

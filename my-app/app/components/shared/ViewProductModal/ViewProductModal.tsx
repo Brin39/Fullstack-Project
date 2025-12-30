@@ -53,16 +53,16 @@ export default function ViewProductModal({ product, isOpen, onClose, onAddToCart
      if (!isOpen) return null;
 
      return (
-          <div className={styles.modalOverlay}>
+          <div className={styles.modalOverlay} data-testid="product-modal">
                <div className={styles.modal}>
                     <div className={styles.modalHeader}>
                          <h2>Product Preview</h2>
-                         <button onClick={onClose} className={styles.closeButton}>×</button>
+                         <button onClick={onClose} className={styles.closeButton} data-testid="modal-close-btn">×</button>
                     </div>
 
                     <div className={styles.productHeader}>
-                         <h1 className={styles.productTitle}>{product.name}</h1>
-                         <p className={`${styles.productPrice} ${product.bestOffer ? styles.bestOffer : ''}`}>
+                         <h1 className={styles.productTitle} data-testid="modal-product-name">{product.name}</h1>
+                         <p className={`${styles.productPrice} ${product.bestOffer ? styles.bestOffer : ''}`} data-testid="modal-product-price">
                               ${product.price}
                          </p>
                     </div>
@@ -79,12 +79,12 @@ export default function ViewProductModal({ product, isOpen, onClose, onAddToCart
                          <div className={styles.productDetails}>
                               <div className={styles.description}>
                                    <h3>Description</h3>
-                                   <p>{product.description}</p>
+                                   <p data-testid="modal-product-description">{product.description}</p>
                               </div>
 
                               <div className={styles.stock}>
                                    <h3>Availability</h3>
-                                   <p>{product.stock && product.stock > 0 ? 'In Stock' : 'Out of Stock'}</p>
+                                   <p data-testid="modal-product-stock">{product.stock && product.stock > 0 ? 'In Stock' : 'Out of Stock'}</p>
                               </div>
 
                               <QuantityControls
@@ -100,6 +100,7 @@ export default function ViewProductModal({ product, isOpen, onClose, onAddToCart
                                    className={styles.addToCartButton}
                                    onClick={handleAddToCart}
                                    disabled={isOutOfStock || readOnly}
+                                   data-testid="add-to-cart-btn"
                               >
                                    {isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
                               </button>

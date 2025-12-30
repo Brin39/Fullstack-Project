@@ -13,7 +13,7 @@ interface QuantityControlsProps {
 
 export default function QuantityControls({ quantity, onQuantityChange, stock, isOutOfStock, total, disabled = false }: QuantityControlsProps) {
      return (
-          <div className={styles.quantity}>
+          <div className={styles.quantity} data-testid="quantity-controls">
                <div className={styles.labels}>
                     <label htmlFor="quantity">Quantity:</label>
                     {total && <label htmlFor="total">Total:</label>}
@@ -25,6 +25,7 @@ export default function QuantityControls({ quantity, onQuantityChange, stock, is
                               type="button"
                               onClick={() => onQuantityChange(quantity - 1)}
                               disabled={quantity <= 1 || isOutOfStock || disabled}
+                              data-testid="quantity-decrease-btn"
                          >
                               -
                          </button>
@@ -37,18 +38,20 @@ export default function QuantityControls({ quantity, onQuantityChange, stock, is
                               min="1"
                               max={stock}
                               disabled={isOutOfStock || disabled}
+                              data-testid="quantity-input"
                          />
                          <button
                               className={styles.quantityButton}
                               type="button"
                               onClick={() => onQuantityChange(quantity + 1)}
                               disabled={isOutOfStock || disabled || (stock !== undefined && quantity >= stock)}
+                              data-testid="quantity-increase-btn"
                          >
                               +
                          </button>
                     </div>
                     {total && (
-                         <div className={styles.total}>
+                         <div className={styles.total} data-testid="quantity-total">
                               ${total}
                          </div>
                     )}

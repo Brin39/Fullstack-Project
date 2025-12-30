@@ -11,6 +11,7 @@ interface PasswordFieldProps {
      onChange: (value: string) => void;
      required?: boolean;
      placeholder?: string;
+     testId?: string;
 }
 
 export default function PasswordField({
@@ -19,7 +20,8 @@ export default function PasswordField({
      value,
      onChange,
      required = false,
-     placeholder
+     placeholder,
+     testId
 }: PasswordFieldProps) {
      const [showPassword, setShowPassword] = useState(false);
 
@@ -34,6 +36,7 @@ export default function PasswordField({
                     <input
                          type={showPassword ? "text" : "password"}
                          id={id}
+                         data-testid={testId || `${id}-input`}
                          value={value}
                          onChange={(e) => onChange(e.target.value)}
                          required={required}
@@ -43,6 +46,7 @@ export default function PasswordField({
                          type="button"
                          className={styles.eyeButton}
                          onClick={togglePasswordVisibility}
+                         data-testid={testId ? `${testId}-toggle` : `${id}-toggle`}
                     >
                          <Image
                               src={showPassword ? "/icons/eye-open.svg" : "/icons/eye-closed.svg"}

@@ -12,10 +12,10 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, onViewProduct }: ProductCardProps) {
     return (
-        <div className={styles.card}>
+        <div className={styles.card} data-testid={`product-card-${product._id}`}>
             <div className={styles.imageContainer}>
                 {product.bestOffer && (
-                    <div className={styles.bestOfferBadge}>
+                    <div className={styles.bestOfferBadge} data-testid={`best-offer-badge-${product._id}`}>
                         <span>🔥 Best Offer!</span>
                     </div>
                 )}
@@ -25,17 +25,19 @@ export default function ProductCard({ product, onViewProduct }: ProductCardProps
                     width={300}
                     height={200}
                     className={styles.image}
+                    data-testid={`product-image-${product._id}`}
                 />
             </div>
             <div className={styles.content}>
-                <h3 className={styles.name}>{product.name}</h3>
+                <h3 className={styles.name} data-testid={`product-name-${product._id}`}>{product.name}</h3>
                 <div className={styles.footer}>
-                    <span className={`${styles.price} ${product.bestOffer ? styles.bestOffer : ''}`}>
+                    <span className={`${styles.price} ${product.bestOffer ? styles.bestOffer : ''}`} data-testid={`product-price-${product._id}`}>
                         {product.bestOffer ? `Only for $${product.price}` : `$${product.price}`}
                     </span>
                     <button
                         onClick={onViewProduct}
                         className={styles.buyButton}
+                        data-testid={`view-product-btn-${product._id}`}
                     >
                         View Product
                     </button>

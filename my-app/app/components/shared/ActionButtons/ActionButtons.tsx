@@ -14,6 +14,7 @@ interface ActionButtonsProps {
      showView?: boolean;
      showDelete?: boolean;
      disabled?: boolean;
+     testIdPrefix?: string;
 }
 
 export default function ActionButtons({
@@ -26,16 +27,18 @@ export default function ActionButtons({
      showEdit = true,
      showView = true,
      showDelete = true,
-     disabled = false
+     disabled = false,
+     testIdPrefix
 }: ActionButtonsProps) {
      return (
-          <div className={styles.container}>
+          <div className={styles.container} data-testid={testIdPrefix ? `${testIdPrefix}-actions` : 'action-buttons'}>
                {showView && onView && (
                     <button
                          onClick={onView}
                          disabled={disabled}
                          className={`${styles.button} ${styles.viewButton}`}
                          title={viewText}
+                         data-testid={testIdPrefix ? `${testIdPrefix}-view-btn` : 'view-btn'}
                     >
                          {viewText}
                     </button>
@@ -46,6 +49,7 @@ export default function ActionButtons({
                          disabled={disabled}
                          className={`${styles.button} ${styles.editButton}`}
                          title={editText}
+                         data-testid={testIdPrefix ? `${testIdPrefix}-edit-btn` : 'edit-btn'}
                     >
                          {editText}
                     </button>
@@ -56,6 +60,7 @@ export default function ActionButtons({
                          disabled={disabled}
                          className={`${styles.button} ${styles.deleteButton}`}
                          title={deleteText}
+                         data-testid={testIdPrefix ? `${testIdPrefix}-delete-btn` : 'delete-btn'}
                     >
                          {deleteText}
                     </button>

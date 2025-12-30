@@ -22,6 +22,7 @@ export default function SearchInput({
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
                     className={styles.input}
+                    data-testid="admin-search-input"
                />
           </div>
      );

@@ -18,15 +18,15 @@ export default function SuccessModal({ isOpen, onClose }: SuccessModalProps) {
      };
 
      return (
-          <div className={styles.modalOverlay}>
+          <div className={styles.modalOverlay} data-testid="success-modal">
                <div className={styles.modal}>
-                    <h2>Registration successful!</h2>
+                    <h2 data-testid="success-message">Registration successful!</h2>
                     <p>Now you can log in to your account.</p>
                     <div className={styles.buttonContainer}>
-                         <button onClick={handleLoginClick} className={styles.loginButton}>
+                         <button onClick={handleLoginClick} className={styles.loginButton} data-testid="modal-login-btn">
                               Login
                          </button>
-                         <button onClick={onClose} className={styles.closeButton}>
+                         <button onClick={onClose} className={styles.closeButton} data-testid="modal-close-btn">
                               Close
                          </button>
                     </div>

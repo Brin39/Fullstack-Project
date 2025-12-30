@@ -23,7 +23,7 @@ export default function OrderCard({
      const hasUser = order.user && variant === 'admin';
 
      return (
-          <div className={styles.orderCard}>
+          <div className={styles.orderCard} data-testid={`order-card-${order._id}`}>
                <OrderInfo
                     orderId={order._id}
                     status={order.status}
@@ -36,10 +36,11 @@ export default function OrderCard({
                               email={order.user!.email}
                          />
                     )}
-                    <OrderItems items={order.items} variant={variant} />
+                    <OrderItems items={order.items} variant={variant} orderId={order._id} />
                     <OrderSummary
                          totalAmount={order.totalAmount}
                          createdAt={order.createdAt}
+                         orderId={order._id}
                     />
                </div>
                {variant === 'admin' && onUpdateStatus && onDelete && (
@@ -49,6 +50,7 @@ export default function OrderCard({
                               onDelete={() => onDelete(order._id)}
                               editText="Update Status"
                               showView={false}
+                              testIdPrefix={`order-${order._id}`}
                          />
                     </div>
                )}

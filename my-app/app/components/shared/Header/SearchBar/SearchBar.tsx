@@ -17,15 +17,16 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
 
      return (
           <div className={styles.searchContainer}>
-               <form onSubmit={handleSearch} className={styles.searchForm}>
+               <form onSubmit={handleSearch} className={styles.searchForm} data-testid="search-form">
                     <input
                          type="text"
                          placeholder="Search for products..."
                          value={searchQuery}
                          onChange={(e) => setSearchQuery(e.target.value)}
                          className={styles.searchInput}
+                         data-testid="search-input"
                     />
-                    <button type="submit" className={styles.searchButton}>
+                    <button type="submit" className={styles.searchButton} data-testid="search-btn">
                          <svg
                               width="20"
                               height="20"

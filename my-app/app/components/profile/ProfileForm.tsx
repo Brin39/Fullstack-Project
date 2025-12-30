@@ -32,7 +32,7 @@ export default function ProfileForm({ profile, onSubmit, onCancel }: ProfileForm
      };
 
      return (
-          <form onSubmit={handleSubmit} className={styles.form}>
+          <form onSubmit={handleSubmit} className={styles.form} data-testid="profile-form">
                <div className={styles.formGroup}>
                     <label htmlFor="name">Name</label>
                     <input
@@ -42,6 +42,7 @@ export default function ProfileForm({ profile, onSubmit, onCancel }: ProfileForm
                          value={formData.name || ''}
                          onChange={handleInputChange}
                          required
+                         data-testid="profile-name-input"
                     />
                </div>
 
@@ -54,6 +55,7 @@ export default function ProfileForm({ profile, onSubmit, onCancel }: ProfileForm
                          value={formData.email || ''}
                          onChange={handleInputChange}
                          required
+                         data-testid="profile-email-input"
                     />
                </div>
 
@@ -65,6 +67,7 @@ export default function ProfileForm({ profile, onSubmit, onCancel }: ProfileForm
                          name="address"
                          value={formData.address || ''}
                          onChange={handleInputChange}
+                         data-testid="profile-address-input"
                     />
                </div>
 
@@ -76,17 +79,19 @@ export default function ProfileForm({ profile, onSubmit, onCancel }: ProfileForm
                          name="phone"
                          value={formData.phone || ''}
                          onChange={handleInputChange}
+                         data-testid="profile-phone-input"
                     />
                </div>
 
                <div className={styles.buttonGroup}>
-                    <button type="submit" className={styles.saveButton}>
+                    <button type="submit" className={styles.saveButton} data-testid="profile-save-btn">
                          Save Changes
                     </button>
                     <button
                          type="button"
                          onClick={onCancel}
                          className={styles.cancelButton}
+                         data-testid="profile-cancel-btn"
                     >
                          Cancel
                     </button>

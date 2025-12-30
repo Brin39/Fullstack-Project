@@ -68,15 +68,15 @@ export default function OrdersPage() {
                     <div className={styles.container}>
                          <h1 className={styles.title}>My Orders</h1>
                          {loading ? (
-                              <div className={styles.loading}>Loading...</div>
+                              <div className={styles.loading} data-testid="loading-spinner">Loading...</div>
                          ) : error ? (
-                              <div className={styles.error}>{error}</div>
+                              <div className={styles.error} data-testid="error-message">{error}</div>
                          ) : orders.length === 0 ? (
-                              <div className={styles.noOrders}>
+                              <div className={styles.noOrders} data-testid="no-orders-message">
                                    <p>You haven&apos;t placed any orders yet.</p>
                               </div>
                          ) : (
-                              <div className={styles.ordersList}>
+                              <div className={styles.ordersList} data-testid="orders-list">
                                    {orders.map((order) => (
                                         <OrderCard
                                              key={order._id}

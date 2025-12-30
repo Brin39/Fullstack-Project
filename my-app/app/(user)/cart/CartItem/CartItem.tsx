@@ -46,7 +46,7 @@ const CartItem = memo<CartItemProps>(({ item, onQuantityChange, onRemove }) => {
 
      return (
           <>
-               <div className={styles.cartItem}>
+               <div className={styles.cartItem} data-testid={`cart-item-${item.product._id}`}>
                     <div className={styles.leftSection}>
                          <div className={styles.imageContainer}>
                               <Image
@@ -55,6 +55,7 @@ const CartItem = memo<CartItemProps>(({ item, onQuantityChange, onRemove }) => {
                                    width={80}
                                    height={80}
                                    className={styles.image}
+                                   data-testid={`cart-item-image-${item.product._id}`}
                               />
                               {item.product.bestOffer && (
                                    <div className={styles.bestOfferBadge}>
@@ -63,23 +64,25 @@ const CartItem = memo<CartItemProps>(({ item, onQuantityChange, onRemove }) => {
                               )}
                          </div>
                          <div className={styles.productInfo}>
-                              <h3 className={styles.productName}>{item.product.name}</h3>
+                              <h3 className={styles.productName} data-testid={`cart-item-name-${item.product._id}`}>{item.product.name}</h3>
                               <p className={styles.productDescription}>
                                    {item.product.description}
                               </p>
-                              <div className={styles.quantityControls}>
+                              <div className={styles.quantityControls} data-testid={`cart-item-quantity-controls-${item.product._id}`}>
                                    <button
                                         className={styles.quantityButton}
                                         onClick={() => handleQuantityChange(item.quantity - 1)}
                                         disabled={item.quantity <= 1}
+                                        data-testid={`cart-item-decrease-${item.product._id}`}
                                    >
                                         -
                                    </button>
-                                   <span className={styles.quantity}>{item.quantity}</span>
+                                   <span className={styles.quantity} data-testid={`cart-item-quantity-${item.product._id}`}>{item.quantity}</span>
                                    <button
                                         className={styles.quantityButton}
                                         onClick={() => handleQuantityChange(item.quantity + 1)}
                                         disabled={item.quantity >= (item.product.stock || 999)}
+                                        data-testid={`cart-item-increase-${item.product._id}`}
                                    >
                                         +
                                    </button>
@@ -88,13 +91,13 @@ const CartItem = memo<CartItemProps>(({ item, onQuantityChange, onRemove }) => {
                     </div>
                     <div className={styles.rightSection}>
                          <div className={styles.topRight}>
-                              <span className={styles.price}>${item.product.price}</span>
-                              <span className={`${styles.stock} ${isInStock ? styles.inStock : styles.outOfStock}`}>
+                              <span className={styles.price} data-testid={`cart-item-price-${item.product._id}`}>${item.product.price}</span>
+                              <span className={`${styles.stock} ${isInStock ? styles.inStock : styles.outOfStock}`} data-testid={`cart-item-stock-${item.product._id}`}>
                                    {stockStatus}
                               </span>
                          </div>
                          <div className={styles.bottomRight}>
-                              <p className={styles.total}>Total: ${total}</p>
+                              <p className={styles.total} data-testid={`cart-item-total-${item.product._id}`}>Total: ${total}</p>
                               <div className={styles.actions}>
                                    <ActionButtons
                                         onView={handleOpenViewModal}
@@ -102,6 +105,7 @@ const CartItem = memo<CartItemProps>(({ item, onQuantityChange, onRemove }) => {
                                         viewText="View Product"
                                         deleteText="Remove"
                                         showEdit={false}
+                                        testIdPrefix={`cart-item-${item.product._id}`}
                                    />
                               </div>
                          </div>

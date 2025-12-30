@@ -10,7 +10,7 @@ interface OrderListProps {
 
 export default function OrderList({ orders, onUpdateStatus, onDelete }: OrderListProps) {
      return (
-          <div className={styles.ordersList}>
+          <div className={styles.ordersList} data-testid="admin-orders-list">
                {orders.map((order) => (
                     <AdminOrderCard
                          key={order._id}

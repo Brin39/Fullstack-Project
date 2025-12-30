@@ -21,32 +21,13 @@ export default function ProductList({ initialProducts }: ProductListProps) {
      const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
      const [isModalOpen, setIsModalOpen] = useState(false);
      const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+     const [pendingCartItem, setPendingCartItem] = useState<{ productId: string; quantity: number } | null>(null);
 
-     const handleViewProduct = (product: Product) => {
-          const token = localStorage.getItem('token');
-          if (!token) {
-               setSelectedProduct(product);
-               setIsAuthModalOpen(true);
-               return;
-          }
-          setSelectedProduct(product);
-          setIsModalOpen(true);
-     };
-
-     const handleAuthSuccess = () => {
-          setIsAuthModalOpen(false);
-          const token = localStorage.getItem('token');
-          if (token) {
-               setIsModalOpen(true);
-          }
-     };
-
-     const handleAddToCart = async (productId: string, quantity: number) => {
+     const addToCart = async (productId: string, quantity: number) => {
           try {
                const token = localStorage.getItem('token');
                if (!token) {
-                    router.replace('/login');
-                    return;
+                    throw new Error('No token available');
                }
 
                const response = await fetch(buildApiUrl('/api/cart'), {
@@ -70,8 +51,52 @@ export default function ProductList({ initialProducts }: ProductListProps) {
           }
      };
 
+     // Проверяем, есть ли pendingCartItem после возврата с страницы логина
+     useEffect(() => {
+          const checkPendingCartItem = async () => {
+               const savedPendingItem = sessionStorage.getItem('pendingCartItem');
+               if (savedPendingItem) {
+                    const { productId, quantity } = JSON.parse(savedPendingItem);
+                    const token = localStorage.getItem('token');
+                    if (token) {
+                         // Пользователь залогинен, добавляем товар в корзину
+                         await addToCart(productId, quantity);
+                         sessionStorage.removeItem('pendingCartItem');
+                         setPendingCartItem(null);
+                    }
+               }
+          };
+          checkPendingCartItem();
+     }, []);
+
+     const handleViewProduct = (product: Product) => {
+          setSelectedProduct(product);
+          setIsModalOpen(true);
+     };
+
+     const handleAuthSuccess = () => {
+          setIsAuthModalOpen(false);
+          // Информация о товаре уже сохранена в sessionStorage
+          // После логина пользователь вернется, и useEffect добавит товар в корзину
+     };
+
+     const handleAddToCart = async (productId: string, quantity: number) => {
+          const token = localStorage.getItem('token');
+          if (!token) {
+               // Сохраняем информацию о товаре в sessionStorage и показываем модальное окно аутентификации
+               const cartItem = { productId, quantity };
+               setPendingCartItem(cartItem);
+               sessionStorage.setItem('pendingCartItem', JSON.stringify(cartItem));
+               setIsAuthModalOpen(true);
+               return;
+          }
+
+          // Если пользователь залогинен, сразу добавляем в корзину
+          await addToCart(productId, quantity);
+     };
+
      return (
-          <div className={styles.productList}>
+          <div className={styles.productList} data-testid="product-list">
                {initialProducts.map((product) => (
                     <ProductCard
                          key={product._id}

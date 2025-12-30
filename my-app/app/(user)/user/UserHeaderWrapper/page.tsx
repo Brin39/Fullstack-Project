@@ -68,7 +68,7 @@ export default function UserHeaderWrapper() {
                <div className={styles.headerSection}>
                     <Header hideAuth={true} />
                     <div className={styles.userControls}>
-                         <Link href="/cart" className={styles.cartLink}>
+                         <Link href="/cart" className={styles.cartLink} data-testid="cart-link">
                               <div className={styles.cartIconWrapper}>
                                    <img src="/icons/cart.svg" alt="Cart" width={24} height={24} className={styles.icon} />
                                    {cartItemCount > 0 && (
@@ -81,15 +81,16 @@ export default function UserHeaderWrapper() {
                               <button
                                    className={styles.profileButton}
                                    onClick={() => setIsDashboardOpen(!isDashboardOpen)}
+                                   data-testid="profile-button"
                               >
                                    <img src="/icons/profile.svg" alt="Profile" width={24} height={24} className={styles.icon} />
                               </button>
                               {isDashboardOpen && (
-                                   <div className={styles.dashboard} ref={dashboardRef}>
-                                        <Link href="/user/profile" className={styles.dashboardItem}>
+                                   <div className={styles.dashboard} ref={dashboardRef} data-testid="user-dashboard">
+                                        <Link href="/user/profile" className={styles.dashboardItem} data-testid="dashboard-my-profile">
                                              My profile
                                         </Link>
-                                        <Link href="/user/orders" className={styles.dashboardItem}>
+                                        <Link href="/user/orders" className={styles.dashboardItem} data-testid="dashboard-my-orders">
                                              My orders
                                         </Link>
                                         <button
@@ -98,6 +99,7 @@ export default function UserHeaderWrapper() {
                                                   clearAuthData();
                                                   window.location.href = '/login';
                                              }}
+                                             data-testid="dashboard-logout"
                                         >
                                              Logout
                                         </button>

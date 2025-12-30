@@ -11,13 +11,14 @@ export default function OrderInfo({ orderId, status, variant = 'user' }: OrderIn
      const shortOrderId = orderId?.slice(-6) || 'N/A';
 
      return (
-          <div className={styles.orderInfo}>
-               <h3>Order #{shortOrderId}</h3>
+          <div className={styles.orderInfo} data-testid={`order-info-${orderId}`}>
+               <h3 data-testid={`order-number-${orderId}`}>Order #{shortOrderId}</h3>
                <span
                     className={styles.status}
                     style={{
                          backgroundColor: getStatusColor(status)
                     }}
+                    data-testid={`order-status-${orderId}`}
                >
                     {status}
                </span>

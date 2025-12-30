@@ -28,14 +28,15 @@ export default function AdminDashboard() {
      ];
 
      return (
-          <div className={styles.dashboard}>
+          <div className={styles.dashboard} data-testid="admin-dashboard">
                <h1 className={styles.title}>Admin Dashboard</h1>
-               <div className={styles.grid}>
+               <div className={styles.grid} data-testid="admin-cards-grid">
                     {sections.map((section) => (
                          <div
                               key={section.path}
                               className={styles.card}
                               onClick={() => router.push(section.path)}
+                              data-testid={`admin-card-${section.path.split('/').pop()}`}
                          >
                               <div className={styles.icon}>{section.icon}</div>
                               <h2 className={styles.cardTitle}>{section.title}</h2>
