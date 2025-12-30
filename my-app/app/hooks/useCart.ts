@@ -37,7 +37,7 @@ export const useCart = () => {
 
      const handleQuantityChange = async (productId: string, quantity: number) => {
           try {
-
+               // Optimistic UI update
                setCartItems(prevItems =>
                     prevItems.map(item =>
                          item.product._id === productId
@@ -58,20 +58,24 @@ export const useCart = () => {
 
                if (handleAuthError(response)) return;
                if (!response.ok) {
-
+                    // If request failed, rollback changes
                     await fetchCartItems();
                     throw new Error('Failed to update quantity');
                }
+
+               // Update state from server response
+               const data = await response.json();
+               setCartItems(data.items || []);
           } catch (error) {
                console.error('Failed to update quantity:', error);
-
+               // In case of error, refresh data from server
                await fetchCartItems();
           }
      };
 
      const handleRemoveItem = async (productId: string) => {
           try {
-
+               // Optimistic UI update
                setCartItems(prevItems => prevItems.filter(item => item.product._id !== productId));
 
                const headers = getAuthHeaders();
@@ -82,13 +86,17 @@ export const useCart = () => {
 
                if (handleAuthError(response)) return;
                if (!response.ok) {
-
+                    // If request failed, rollback changes
                     await fetchCartItems();
                     throw new Error('Failed to remove item');
                }
+
+               // Update state from server response
+               const data = await response.json();
+               setCartItems(data.items || []);
           } catch (error) {
                console.error('Failed to remove item:', error);
-
+               // In case of error, refresh data from server
                await fetchCartItems();
           }
      };

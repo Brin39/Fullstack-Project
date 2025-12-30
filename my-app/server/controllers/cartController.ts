@@ -79,6 +79,8 @@ export const updateCartItem: RequestHandler = async (req, res) => {
           const { quantity } = req.body;
           const userId = req.user._id;
 
+          console.log(`[updateCartItem] Received: productId=${productId}, quantity=${quantity}, userId=${userId}`);
+
           if (quantity < 1) {
                res.status(400).json({ message: 'Quantity must be at least 1' });
                return;
@@ -99,6 +101,8 @@ export const updateCartItem: RequestHandler = async (req, res) => {
                return;
           }
 
+          console.log(`[updateCartItem] Current quantity: ${cart.items[itemIndex].quantity}, New quantity: ${quantity}`);
+
           const product = await Product.findById(productId);
           if (!product || product.stock < quantity) {
                res.status(400).json({ message: 'Not enough stock available' });
@@ -111,8 +115,12 @@ export const updateCartItem: RequestHandler = async (req, res) => {
           const updatedCart = await Cart.findById(cart._id)
                .populate('items.product', 'name price images stock description');
 
+          const updatedItem = updatedCart.items.find(item => item.product._id.toString() === productId);
+          console.log(`[updateCartItem] Updated quantity in response: ${updatedItem?.quantity}`);
+
           res.status(200).json(updatedCart);
      } catch (error) {
+          console.error('[updateCartItem] Error:', error);
           res.status(500).json({ message: 'Error updating cart item' });
      }
 };

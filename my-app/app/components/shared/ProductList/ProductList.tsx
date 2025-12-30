@@ -51,7 +51,7 @@ export default function ProductList({ initialProducts }: ProductListProps) {
           }
      };
 
-     // Проверяем, есть ли pendingCartItem после возврата с страницы логина
+     // Check if there is a pendingCartItem after returning from login page
      useEffect(() => {
           const checkPendingCartItem = async () => {
                const savedPendingItem = sessionStorage.getItem('pendingCartItem');
@@ -59,7 +59,7 @@ export default function ProductList({ initialProducts }: ProductListProps) {
                     const { productId, quantity } = JSON.parse(savedPendingItem);
                     const token = localStorage.getItem('token');
                     if (token) {
-                         // Пользователь залогинен, добавляем товар в корзину
+                         // User is logged in, add item to cart
                          await addToCart(productId, quantity);
                          sessionStorage.removeItem('pendingCartItem');
                          setPendingCartItem(null);
@@ -76,14 +76,14 @@ export default function ProductList({ initialProducts }: ProductListProps) {
 
      const handleAuthSuccess = () => {
           setIsAuthModalOpen(false);
-          // Информация о товаре уже сохранена в sessionStorage
-          // После логина пользователь вернется, и useEffect добавит товар в корзину
+          // Product information is already saved in sessionStorage
+          // After login, user will return and useEffect will add item to cart
      };
 
      const handleAddToCart = async (productId: string, quantity: number) => {
           const token = localStorage.getItem('token');
           if (!token) {
-               // Сохраняем информацию о товаре в sessionStorage и показываем модальное окно аутентификации
+               // Save product information to sessionStorage and show authentication modal
                const cartItem = { productId, quantity };
                setPendingCartItem(cartItem);
                sessionStorage.setItem('pendingCartItem', JSON.stringify(cartItem));
@@ -91,7 +91,7 @@ export default function ProductList({ initialProducts }: ProductListProps) {
                return;
           }
 
-          // Если пользователь залогинен, сразу добавляем в корзину
+          // If user is logged in, add to cart immediately
           await addToCart(productId, quantity);
      };
 

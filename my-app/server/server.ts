@@ -29,16 +29,20 @@ app.use(helmet({
 // Rate limiting - prevent brute force attacks
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
+  max: 1000, // Increased for testing (default: 100)
   message: { message: 'Too many requests, please try again later' },
   standardHeaders: true,
   legacyHeaders: false,
+  skip: (req) => {
+    // Skip rate limiting for auth routes (they have their own limiter)
+    return req.path === '/api/users/login' || req.path === '/api/users/register';
+  }
 });
 
 // Stricter rate limit for auth routes
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 1000, // Increased for testing (default: 10)
+  max: 10000, // Increased for testing (default: 10)
   message: { message: 'Too many login attempts, please try again later' },
   standardHeaders: true,
   legacyHeaders: false,
@@ -77,12 +81,12 @@ app.get('/', (_, res) => {
   res.json({ message: 'API is working' });
 });
 
-// Apply rate limiting to API routes
-app.use('/api/', apiLimiter);
-
-// Apply stricter rate limiting to auth routes
+// Apply stricter rate limiting to auth routes first
 app.use('/api/users/login', authLimiter);
 app.use('/api/users/register', authLimiter);
+
+// Apply rate limiting to other API routes (auth routes are excluded via skip function)
+app.use('/api/', apiLimiter);
 
 // Routes
 app.use('/api/users', userRoutes);
