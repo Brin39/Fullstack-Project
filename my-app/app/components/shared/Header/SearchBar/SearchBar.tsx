@@ -1,18 +1,39 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './SearchBar.module.css';
 
 interface SearchBarProps {
      onSearch?: (query: string) => void;
+     searchValue?: string; // External control for search value
 }
 
-export default function SearchBar({ onSearch }: SearchBarProps) {
-     const [searchQuery, setSearchQuery] = useState('');
+export default function SearchBar({ onSearch, searchValue }: SearchBarProps) {
+     const [searchQuery, setSearchQuery] = useState(searchValue || '');
+
+     // Sync with external searchValue prop
+     useEffect(() => {
+          if (searchValue !== undefined) {
+               setSearchQuery(searchValue);
+          }
+     }, [searchValue]);
 
      const handleSearch = (e: React.FormEvent) => {
           e.preventDefault();
-          if (searchQuery.trim() && onSearch) {
-               onSearch(searchQuery.trim());
+          const trimmedQuery = searchQuery.trim();
+          if (onSearch) {
+               // Call onSearch even if empty to reset to initial state
+               onSearch(trimmedQuery);
           }
+     };
+
+     const handleClear = () => {
+          setSearchQuery('');
+          if (onSearch) {
+               onSearch(''); // Reset to initial state
+          }
+     };
+
+     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+          setSearchQuery(e.target.value);
      };
 
      return (
@@ -22,10 +43,35 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
                          type="text"
                          placeholder="Search for products..."
                          value={searchQuery}
-                         onChange={(e) => setSearchQuery(e.target.value)}
+                         onChange={handleInputChange}
                          className={styles.searchInput}
                          data-testid="search-input"
                     />
+                    {searchQuery && (
+                         <button
+                              type="button"
+                              onClick={handleClear}
+                              className={styles.clearButton}
+                              data-testid="search-clear-btn"
+                              aria-label="Clear search"
+                         >
+                              <svg
+                                   width="16"
+                                   height="16"
+                                   viewBox="0 0 16 16"
+                                   fill="none"
+                                   xmlns="http://www.w3.org/2000/svg"
+                              >
+                                   <path
+                                        d="M12 4L4 12M4 4L12 12"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                   />
+                              </svg>
+                         </button>
+                    )}
                     <button type="submit" className={styles.searchButton} data-testid="search-btn">
                          <svg
                               width="20"

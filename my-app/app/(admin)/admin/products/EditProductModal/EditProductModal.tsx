@@ -48,17 +48,18 @@ export default function EditProductModal({ product, isOpen, onClose, onSave }: E
                title="Edit Product"
                size="medium"
           >
-               <form onSubmit={handleSubmit} className={styles.form}>
+               <form onSubmit={handleSubmit} className={styles.form} data-testid="edit-product-form">
                     <ProductFormFields
                          values={values}
                          errors={errors}
                          onChange={handleChange}
                     />
-                    <div className={styles.buttonContainer}>
+                    <div className={styles.buttonContainer} data-testid="edit-product-buttons">
                          <button
                               type="button"
                               onClick={handleCancel}
                               className={styles.cancelButton}
+                              data-testid="edit-product-cancel-btn"
                          >
                               Cancel
                          </button>
@@ -66,6 +67,7 @@ export default function EditProductModal({ product, isOpen, onClose, onSave }: E
                               type="submit"
                               disabled={isSubmitting}
                               className={styles.submitButton}
+                              data-testid="edit-product-save-btn"
                          >
                               {isSubmitting ? 'Saving...' : 'Save Changes'}
                          </button>

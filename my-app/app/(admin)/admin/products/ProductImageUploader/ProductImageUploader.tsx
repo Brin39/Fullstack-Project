@@ -70,22 +70,23 @@ export default function ProductImageUploader({
 
 
      return (
-          <div className={styles.imageUpload}>
-               {error && <div className={styles.error}>{error}</div>}
+          <div className={styles.imageUpload} data-testid="product-image-uploader">
+               {error && <div className={styles.error} data-testid="image-upload-error">{error}</div>}
                <input
                     type="file"
                     accept="image/*"
                     multiple
                     onChange={handleImageChange}
                     disabled={images.length >= maxImages}
+                    data-testid="product-image-input"
                />
-               <p className={styles.uploadHint}>
+               <p className={styles.uploadHint} data-testid="image-upload-hint">
                     Upload up to {maxImages} images (max 5MB each). First image will be the main image.
                </p>
-               <div className={styles.imagePreview}>
+               <div className={styles.imagePreview} data-testid="image-preview-container">
                     {images.map((image: string, index: number) => (
-                         <div key={`image-${image.substring(0, 20)}-${index}`} className={`${styles.imageContainer} ${index === 0 ? styles.mainImage : ''}`}>
-                              {index === 0 && <div className={styles.mainImageBadge}>Main</div>}
+                         <div key={`image-${image.substring(0, 20)}-${index}`} className={`${styles.imageContainer} ${index === 0 ? styles.mainImage : ''}`} data-testid={`image-preview-${index}`}>
+                              {index === 0 && <div className={styles.mainImageBadge} data-testid="main-image-badge">Main</div>}
                               {image && (
                                    <Image
                                         src={image}
@@ -93,15 +94,17 @@ export default function ProductImageUploader({
                                         width={100}
                                         height={100}
                                         className={styles.previewImage}
+                                        data-testid={`preview-image-${index}`}
                                    />
                               )}
-                              <div className={styles.imageControls}>
+                              <div className={styles.imageControls} data-testid={`image-controls-${index}`}>
                                    {index !== 0 && (
                                         <button
                                              type="button"
                                              onClick={() => moveToFirst(index)}
                                              className={styles.controlButton}
                                              title="Make main image"
+                                             data-testid={`make-main-image-btn-${index}`}
                                         >
                                              ⭐
                                         </button>
@@ -113,6 +116,7 @@ export default function ProductImageUploader({
                                    onClick={() => removeImage(index)}
                                    className={styles.removeImage}
                                    title="Remove image"
+                                   data-testid={`remove-image-btn-${index}`}
                               >
                                    ×
                               </button>

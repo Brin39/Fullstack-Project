@@ -10,7 +10,11 @@ import { clearAuthData } from '@/app/utils/authUtils';
 import { buildApiUrl } from '@/app/utils/apiBase';
 import styles from './page.module.css';
 
-export default function UserHeaderWrapper() {
+interface UserHeaderWrapperProps {
+     onSearch?: (query: string) => void;
+}
+
+export default function UserHeaderWrapper({ onSearch }: UserHeaderWrapperProps) {
      const router = useRouter();
      const { checkAuth } = useAuthCheck();
      const [isDashboardOpen, setIsDashboardOpen] = useState(false);
@@ -66,7 +70,7 @@ export default function UserHeaderWrapper() {
      return (
           <div className={styles.wrapper}>
                <div className={styles.headerSection}>
-                    <Header hideAuth={true} />
+                    <Header hideAuth={true} onSearch={onSearch} />
                     <div className={styles.userControls}>
                          <Link href="/cart" className={styles.cartLink} data-testid="cart-link">
                               <div className={styles.cartIconWrapper}>

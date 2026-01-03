@@ -63,7 +63,14 @@ export default function Home() {
      const handleSearch = async (query: string) => {
           try {
                setLoading(true);
+               setError(null);
                setSearchQuery(query);
+
+               if (!query.trim()) {
+                    // If query is empty, fetch all products
+                    await fetchProducts();
+                    return;
+               }
 
                const response = await fetch(buildApiUrl(`/api/products/search?query=${encodeURIComponent(query)}`));
 

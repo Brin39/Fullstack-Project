@@ -41,16 +41,17 @@ export default function BaseModal({
      if (!isOpen) return null;
 
      return (
-          <div className={styles.modalOverlay} onClick={onClose}>
+          <div className={styles.modalOverlay} onClick={onClose} data-testid="modal-overlay">
                <div
                     className={`${styles.modal} ${styles[size]}`}
                     onClick={e => e.stopPropagation()}
+                    data-testid="modal"
                >
-                    <div className={styles.modalHeader}>
-                         <h2>{title}</h2>
-                         <button onClick={onClose} className={styles.closeButton}>×</button>
+                    <div className={styles.modalHeader} data-testid="modal-header">
+                         <h2 data-testid="modal-title">{title}</h2>
+                         <button onClick={onClose} className={styles.closeButton} data-testid="modal-close-btn">×</button>
                     </div>
-                    <div className={styles.modalContent}>
+                    <div className={styles.modalContent} data-testid="modal-content">
                          {children}
                     </div>
                </div>
